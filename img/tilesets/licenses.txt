@@ -1,0 +1,5 @@
+forest_tiles.png (original: 16tiles.png)
+mage_cty.png (original: magecity_0.png)
+
+License: CC0
+Author: Hyptosis (www.lorestrome.com)

@@ -1,0 +1,472 @@
+* { margin: 0px; padding: 0px; }
+*:focus { outline: none; }
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	font-family: Nunito;
+	background-color: #333;
+	box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.5);
+	overflow: hidden;
+}
+
+a {
+	color: #FFF;
+	text-decoration: none;
+	border-bottom: 1px dotted #FFF;
+}
+
+a:hover { border-bottom: 1px solid #FFF; }
+
+#info {
+	position: absolute;
+	top: 50px;
+	left: 320px;
+	color: #F00;
+	font-size: 30px;
+}
+
+#container {
+	position: absolute;
+}
+
+#canvas {
+	position: absolute;
+	z-index: 0;
+
+	display: block;
+	background-color: #666;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+#grid {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+
+	width: 100%;
+	height: 100%;
+	background-repeat: repeat;
+}
+
+#viewport {
+	width: 800px;
+	height: 600px;
+
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 2;
+
+	background-color: transparent;
+	box-shadow: inset 2px 2px 0px #C00, inset -2px -2px 0px #C00;
+
+	border: 1px solid rgba(0, 0, 0, 0.4);
+	border-width: 0px;
+}
+
+#mask {
+	width: 800px;
+	height: 600px;
+
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 3;
+
+	background-color: transparent;
+
+	border: 1px solid rgba(0, 0, 0, 0.4);
+	border-width: 0px;
+}
+
+#scrollbar {
+	width: 5px;
+	height: 200px;
+
+	margin-top: 10px;
+
+	background-color: #333;
+	box-shadow: inset -1px -1px 1px #000;
+	border: 1px solid #666;
+
+	border-radius: 5px;
+	position: absolute;
+	top: 0px;
+	left: 267px;
+	z-index: 98;
+
+	cursor: pointer;
+}
+
+#help {
+	position: absolute;
+	top: 50px;
+	left: 320px;
+	cursor: pointer;
+}
+
+.ui-dialog-titlebar {
+	color: #FFF;
+	text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 20px;
+	letter-spacing: 0px;
+	background-color: #666;
+
+	background-image: url("../img/gradient.svg");
+
+	border-top: 1px solid #FFF;
+	border-radius: 3px 3px 0px 0px;
+
+	padding: 10px;
+	cursor: move;
+}
+
+.ui-dialog {
+	width: 500px;
+	box-shadow: inset 0px 0px 10px #222;
+	border: 1px solid #999;
+	border-radius: 5px;
+}
+
+.ui-dialog-titlebar-close {
+	float: right;
+}
+
+.dialog {
+	background-color: #EEE;
+	padding: 10px;
+	display: none;
+}
+
+#help img {
+	position: absolute;
+	z-index: 1;
+}
+
+#help_tooltip {
+	position: relative;
+	top: 2px;
+	left: 2px;
+	width: 60px;
+	height: 49px;
+	padding-top: 7px;
+
+	background-color: #EEE;
+	border: 2px solid #97ca00;
+	border-radius: 100px;
+	box-shadow: 0px 0px 10px #000;
+	overflow: hidden;
+	opacity: 0;
+
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-o-transition: all 0.5s;
+	-ms-transition: all 0.5s;
+	transition: all 0.5s;
+}
+
+#help:hover #help_tooltip {
+	width: 100px !important;
+	padding-left: 70px;
+	padding-right: 10px;
+	opacity: 1;
+}
+
+#toolbar {
+	color: #CCC;
+	font-size: 12px;
+	text-shadow: 1px 1px 0px #000;
+
+	width: 250px;
+	height: 100%;
+
+	padding: 10px;
+	overflow: hidden;
+
+	background-color: #444;
+	border-right: 1px solid #666;
+	box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.5);
+
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#toolbar > div {
+	background-color: #333;
+	margin-bottom: 10px;
+	padding: 5px;
+
+	border-radius: 5px;
+}
+
+#toolbar > div:last-child {
+	margin-bottom: 20px;
+}
+
+#toolbar > div > h2 {
+	color: #FFF;
+	text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 20px;
+	letter-spacing: 0px;
+	background-color: #666;
+
+	background-image: url("../img/icons/collapse.png"), url("../img/gradient.svg");
+
+	background-size: 22px 22px, contain;
+	background-repeat: no-repeat, repeat;
+	background-position: 210px 50%, 0px 0px;
+
+	border-top: 1px solid #FFF;
+	border-radius: 3px 3px 0px 0px;
+
+	padding: 10px;
+	cursor: pointer;
+}
+
+#output > h2 {
+	background-image: url("../img/gradient.svg") !important;
+
+	background-size: contain !important;
+	background-repeat: repeat !important;
+	background-position: 0px 0px !important;
+	border-radius: 3px !important;
+}
+
+#toolbar > div > h2.expand { background-image: url("../img/icons/expand.png"), url("../img/gradient.svg"); }
+
+#toolbar > div > div {
+	background-color: #333;
+	border: 1px solid #222;
+	border-top: 0px;
+
+	box-shadow: inset 0px 0px 10px #222;
+	padding: 10px;
+	border-radius: 0px 0px 3px 3px;
+
+	overflow: hidden;
+}
+
+#toolbar hr {
+	height: 0px;
+	margin: 20px 0px;
+
+	border: 0px;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #666;
+}
+
+#toolbar input[type=text] {
+	color: #111;
+	width: 100px;
+	background-color: #666;
+	box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.2);
+
+	border-radius: 3px;
+	border: 1px solid #555;
+
+	padding: 3px;
+}
+
+
+/* ===================== */
+/* === TILESETS ======== */
+/* ===================== */
+
+#tilesets select {
+	width: 100%;
+}
+
+#tilesets > div {
+	height: 200px;
+	overflow: scroll !important;
+}
+
+#tilesets > div > div {
+	line-height: 0px;
+}
+
+#tilesets > div > div > img {
+	display: inline;
+	border: 1px solid #333;
+	cursor: pointer;
+}
+
+#tilesets > div > div > img.selected, #tilesets > div > div > img:hover {
+	border: 1px solid #FFF;
+}
+
+#tilesets > div > input {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+}
+
+#loading {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
+}
+
+#loading > img {
+	padding-top: 25px;
+}
+
+#tilesets ul {
+	list-style: none;
+}
+
+#tilesets ul li:hover {
+	cursor: pointer;
+	color: #C00;
+	text-decoration: line-through;
+}
+
+
+/* ===================== */
+/* === LAYERS ========== */
+/* ===================== */
+
+#cm_layer {
+	top: 250px;
+	left: 180px;
+}
+
+#layers img { cursor: pointer; }
+
+#layer_list td {
+	padding-bottom: 5px;
+	padding-right: 5px;
+	text-align: left;
+}
+
+#layer_list tr:last-child td { padding-bottom: 0px; }
+
+ul#layer_list {
+	border: 1px solid #111;
+	list-style: none;
+}
+
+ul#layer_list li {
+	color: #CCC;
+	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
+
+	height: 10px;
+	position: relative;
+
+	padding: 10px;
+	padding-left: 35px;
+	background-color: #666;
+
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #333;
+
+	background-image: url("../img/icons/eye_open.png");
+	background-repeat: no-repeat;
+	background-position: 10px 50%;
+
+	cursor: pointer;
+}
+
+ul#layer_list li:last-child {
+	border-bottom: 0px;
+}
+
+ul#layer_list li.hide { background-image: url("../img/icons/eye_closed.png"); }
+
+#layer_list input[type=text] {
+	color: #CCC;
+	width: 164px;
+
+	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
+	font-size: 12px;
+
+	padding: 2px 5px;
+	position: absolute;
+	top: 4px;
+
+	background-color: #555;
+	box-shadow: none;
+	border: 1px solid #999;
+	border-radius: 0px;
+}
+
+#layer_list li.active {
+	background-color: #564;
+}
+
+#layer_list input[readonly] {
+	color: #CCC;
+	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
+	font-size: 12px;
+
+	padding: 0px;
+	top: 7px;
+
+	background-color: transparent;
+	box-shadow: none;
+	border: none;
+
+	unselectable: on;
+	user-select: none;
+	selectstart: false;
+	cursor: pointer;
+}
+
+
+/* ===================== */
+/* === SETTINGS ======== */
+/* ===================== */
+
+#settings td {
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+
+#settings fieldset {
+	border: 1px solid #555;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #444;
+
+	box-shadow: 1px 1px 0px #222;
+}
+
+#settings fieldset legend {
+	padding: 0px 5px;
+	color: #FFF;
+}
+
+#settings fieldset table {
+	width: 100%;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+#settings fieldset table tr td {
+	padding: 0px 5px 5px 0px;
+}
+
+#settings fieldset table tr:last-child td {
+	padding-bottom: 0px;
+}
+
+#settings fieldset table tr td input {
+	width: 100% !important;
+}
