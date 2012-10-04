@@ -143,6 +143,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	initialize: function() {
 		this.init();
+		this.$el.find("#tiles").jScrollPane();
 
 		// Doesn't seem to work inside events: {}
 		$("#dialog_tileset #tileset_add").on("click", { self: this }, this.addTileset);
@@ -164,20 +165,22 @@ var TilesetCollectionView = Backbone.View.extend({
 			// Only display the first one
 			if (i == 0) {
 				for (var i = 0, l = tileset.get("tiles").length; i < l; i++) {
-					$("#tilesets > div > div").append(tileset.get("tiles")[i]);
-					if (i % Math.floor(w / tw) == tw+3) { $("#tilesets > div > div").append("<br>"); }
+					$("#tilesets #tiles > div").append(tileset.get("tiles")[i]);
+					if (i % Math.floor(w / tw) == tw+3) { $("#tilesets #tiles > div").append("<br>"); }
 				}
 
-				$("#tilesets > div > div").css("width", (w + (Math.floor(w / tw)*2)) + "px");
+				$("#tilesets #tiles > div").css("width", (w + (Math.floor(w / tw)*2)) + "px");
 			}
 
 			$("select[name=tileset_select]").append("<option>" + tileset.get("name") + "</option>");
 		}, this);
+
+		$("#loading").hide();
 	},
 
 	changeTileset: function(e) {
 
-		$("#tilesets > div > div").html("");
+		$("#tilesets #tiles > div").html("");
 		if (this.collection.models.length == 0) { return; }
 
 		var id = !e ? this.collection.models.length-1 : $(e.target).find("option:selected").index();
@@ -188,13 +191,13 @@ var TilesetCollectionView = Backbone.View.extend({
 		for (var i = 0, l = this.collection.models[id].get("tiles").length; i < l; i++) {
 
 			var img = this.collection.models[id].get("tiles")[i];
-			$("#tilesets > div > div").append(img);
+			$("#tilesets #tiles > div").append(img);
 
 			// TODO find out why +3 is neccessary :D
-			if (i % Math.floor(w / tw) == tw+3) { $("#tilesets > div > div").append("<br>"); }
+			if (i % Math.floor(w / tw) == tw+3) { $("#tilesets #tiles > div").append("<br>"); }
 		}
 
-		$("#tilesets > div > div").css("width", (w + (Math.floor(w / tw)*2)) + "px");
+		$("#tilesets #tiles > div").css("width", (w + (Math.floor(w / tw)*2)) + "px");
 		this.$el.find("select[name=tileset_select] option:eq(" + id + ")").attr("selected", true);
 	},
 
@@ -290,7 +293,7 @@ var CanvasView = Backbone.View.extend({
 		"keydown": "handleKeyDown",
 		"keyup": "handleKeyUp",
 		"change #tilesets select[name=tileset_select]": "updateGrid",
-		"click #tilesets div > div > img": "selectTile"
+		"click #tilesets #tiles img": "selectTile"
 	},
 
 	updateGrid: function() {

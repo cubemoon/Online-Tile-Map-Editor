@@ -6,10 +6,13 @@
 
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Nunito:400">
 		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery.jscrollpane.css">
 
 		<script src="js/libs/jquery-1.8.2.min.js"></script>
 		<script src="js/libs/jquery-ui-1.8.24.custom.min.js"></script>
-		<script src="js/libs/jquery.mousewheel.min.js"></script>
+
+		<script src="js/plugins/jquery.mousewheel.min.js"></script>
+		<script src="js/plugins/jquery.jscrollpane.min.js"></script>
 
 		<script src="js/libs/underscore.min.js"></script>
 		<script src="js/libs/backbone.min.js"></script>
@@ -31,39 +34,43 @@
 		<div id="toolbar">
 			<div id="tilesets">
 				<h2>Tilesets</h2>
-				<select name="tileset_select"><select>
-				<div><div></div></div>
 
-				<div class="dialog" id="dialog_tileset" title="Add Tileset">
-					<table>
-						<tr>
-							<td>File</td>
-							<td><input type="file" name="tileset_file"></td>
-						</tr>
-						<tr>
-							<td>Tile Width</td>
-							<td><input type="number" name="tile_width" value="32"></td>
-						</tr>
-						<tr>
-							<td>Tile Height</td>
-							<td><input type="number" name="tile_height" value="32"></td>
-						</tr>
-						<tr>
-							<td>Tile Margin</td>
-							<td><input type="number" name="tile_margin" value="0"></td>
-						</tr>
-						<tr>
-							<td>Tile Alpha (format: R, G, B)</td>
-							<td><input type="text" name="tile_alpha" value=""></td>
-						</tr>
-						<tr>
-							<td colspan="2"><input type="button" value="add" id="tileset_add"></td>
-						</tr>
-					</table>
+				<div>
+					<div id="loading"><img src="img/icons/loading.gif" alt="loading"></div>
+					<div id="custom_select"><select name="tileset_select"><select></div>
+					<div id="tiles"><div></div></div>
+
+					<div class="dialog" id="dialog_tileset" title="Add Tileset">
+						<table>
+							<tr>
+								<td>File</td>
+								<td><input type="file" name="tileset_file"></td>
+							</tr>
+							<tr>
+								<td>Tile Width</td>
+								<td><input type="number" name="tile_width" value="32"></td>
+							</tr>
+							<tr>
+								<td>Tile Height</td>
+								<td><input type="number" name="tile_height" value="32"></td>
+							</tr>
+							<tr>
+								<td>Tile Margin</td>
+								<td><input type="number" name="tile_margin" value="0"></td>
+							</tr>
+							<tr>
+								<td>Tile Alpha (format: R, G, B)</td>
+								<td><input type="text" name="tile_alpha" value=""></td>
+							</tr>
+							<tr>
+								<td colspan="2"><input type="button" value="add" id="tileset_add"></td>
+							</tr>
+						</table>
+					</div><br>
+
+					<a href="#" id="tileset_add_dialog">Add tileset</a>
+					<a href="#" id="tileset_remove">Remove tileset</a>
 				</div>
-
-				<a href="#" id="tileset_add_dialog">Add tileset</a>
-				<a href="#" id="tileset_remove">Remove tileset</a>
 			</div>
 
 			<div id="layers">

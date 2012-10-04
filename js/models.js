@@ -12,8 +12,8 @@ var Settings = Backbone.Model.extend({
 			$("#grid").css("width", $("#canvas").css("width"));
 			$("#grid").css("height", $("#canvas").css("height"));
 
-			$("#tiles").css("width", $("#canvas").css("width"));
-			$("#tiles").css("height", $("#canvas").css("height"));
+			$("#canvas_tiles").css("width", $("#canvas").css("width"));
+			$("#canvas_tiles").css("height", $("#canvas").css("height"));
 
 			$("#canvas").css("backgroundColor", this.get("canvas_bgcolor"));
 			$("#grid").css("display", this.get("grid_toggle") ? "block" : "none");
@@ -213,15 +213,15 @@ var Tileset = Backbone.Model.extend({
 
 var Canvas = Backbone.Model.extend({
 	initialize: function() {
-		$("#canvas").append("<div id='selection'></div>");
-		$("#canvas").append("<div id='tiles'></div>");
+		$("#canvas").append("<div id='canvas_selection'></div>");
+		$("#canvas").append("<div id='canvas_tiles'></div>");
 
-		$("#selection").css("position", "absolute");
-		$("#selection").css("zIndex", "99");
-		$("#tiles").css("position", "absolute");
+		$("#canvas_selection").css("position", "absolute");
+		$("#canvas_selection").css("zIndex", "99");
+		$("#canvas_tiles").css("position", "absolute");
 
-		$("#tiles").css("width", $("#canvas").css("width"));
-		$("#tiles").css("height", $("#canvas").css("height"));
+		$("#canvas_tiles").css("width", $("#canvas").css("width"));
+		$("#canvas_tiles").css("height", $("#canvas").css("height"));
 
 		this.update_grid();
 	},
@@ -236,19 +236,19 @@ var Canvas = Backbone.Model.extend({
 		var tw = tileset_active.get("tile_size")[0];
 		var th = tileset_active.get("tile_size")[1];
 
-		$("#selection").css("left", (tw*this.get("cursor")[0]) + "px");
-		$("#selection").css("top", (th*this.get("cursor")[1]) + "px");
+		$("#canvas_selection").css("left", (tw*this.get("cursor")[0]) + "px");
+		$("#canvas_selection").css("top", (th*this.get("cursor")[1]) + "px");
 
 		this.get("layer_view").collection.each(function(layer) {
 			var map = layer.get("map");
 
-			if (!$("#tiles > #" + layer.get("name")).length) {
+			if (!$("#canvas_tiles > #" + layer.get("name")).length) {
 				var div = document.createElement("div");
 				$(div).css("position", "absolute");
 				$(div).css("width", "100%");
 				$(div).css("height", "100%");
 				$(div).attr("id", layer.get("name"));
-				$("#tiles").append(div);
+				$("#canvas_tiles").append(div);
 			}
 
 			for (var tileset in map) {
@@ -257,26 +257,26 @@ var Canvas = Backbone.Model.extend({
 				var x = this.get("cursor")[0] * tw;
 				var y = this.get("cursor")[1] * th;
 
-				if (!$("#tiles > #" + layer.get("name") + " ." + coords).length) {
+				if (!$("#canvas_tiles > #" + layer.get("name") + " ." + coords).length) {
 					var img = map[tileset][coords];
 					$(img).addClass(coords);
 					$(img).css("position", "absolute");
 					$(img).css("left", x + "px");
 					$(img).css("top", y + "px");
 
-					$("#tiles #" + layer.get("name")).append(img);
+					$("#canvas_tiles #" + layer.get("name")).append(img);
 				} else {
-					$($("#tiles > #" + layer.get("name") + " ." + coords)[0]).attr("src", $(map[tileset][coords]).attr("src"));
+					$($("#canvas_tiles > #" + layer.get("name") + " ." + coords)[0]).attr("src", $(map[tileset][coords]).attr("src"));
 				}
 			}
 		}, this);
 
 		if (this.has("selection")) {
-			$("#selection").css("backgroundColor", "transparent");
-			$("#selection").html(this.get("selection"));
+			$("#canvas_selection").css("backgroundColor", "transparent");
+			$("#canvas_selection").html(this.get("selection"));
 		} else {
-			$("#selection").html("");
-			$("#selection").css("backgroundColor", "rgba(255, 255, 255, 0.2)");
+			$("#canvas_selection").html("");
+			$("#canvas_selection").css("backgroundColor", "rgba(255, 255, 255, 0.2)");
 		}
 	},
 
@@ -297,7 +297,7 @@ var Canvas = Backbone.Model.extend({
 		bfr.fillRect(tw-1, 0, 1, th);
 
 		$("#grid").css("backgroundImage", "url(" + buffer.toDataURL() + ")");
-		$("#selection").css("width", tw + "px");
-		$("#selection").css("height", th + "px");
+		$("#canvas_selection").css("width", tw + "px");
+		$("#canvas_selection").css("height", th + "px");
 	}
 });

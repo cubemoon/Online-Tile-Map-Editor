@@ -14,12 +14,12 @@ body {
 }
 
 a {
-	color: #FFF;
+	color: #999;
 	text-decoration: none;
-	border-bottom: 1px dotted #FFF;
+	border-bottom: 1px dotted #999;
 }
 
-a:hover { border-bottom: 1px solid #FFF; }
+a:hover { border-bottom: 1px solid #999; }
 
 
 /* ===================== */
@@ -125,6 +125,7 @@ a:hover { border-bottom: 1px solid #FFF; }
 }
 
 #toolbar > div {
+	position: relative;
 	background-color: #333;
 	border-radius: 5px;
 
@@ -183,35 +184,62 @@ a:hover { border-bottom: 1px solid #FFF; }
 /* === TILESETS ======== */
 /* ===================== */
 
-#tilesets select { width: 100%; }
+#custom_select {
+	width: 100%;
+	height: 30px;
+	overflow: hidden;
+	background-color: #666;
+	box-shadow: inset 0px -5px 10px rgba(0, 0, 0, 0.2);
+	background-image: url("../img/icons/select_arrow.png");
+	background-position: right;
+	background-repeat: no-repeat;
+	border: 0px;
+	border-radius: 3px;
+	border: 1px solid #555;
 
-#tilesets > div {
-	height: 200px;
-	overflow: scroll !important;
+	margin-bottom: 10px;
 }
 
-#tilesets > div > div > img {
+#tilesets select[name=tileset_select] {
+	width: 360px;
+	padding: 5px 0px 5px 5px;
+	color: #CCC;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 16px;
+	text-shadow: 0px -1px #322;
+	border: 0px;
+	background: transparent;
+	-webkit-appearance: none;
+}
+
+#tilesets #tiles {
+	height: 200px;
+}
+
+#tilesets #tiles img {
 	display: inline;
 	border: 1px solid #333;
 	cursor: pointer;
 }
 
-#tilesets > div > div { line-height: 0px; }
-#tilesets > div > div > img:hover { border: 1px solid #FFF; }
+#tilesets #tiles { line-height: 0px; }
+#tilesets #tiles img:hover { border: 1px solid #FFF; }
 
 #loading {
 	position: absolute;
-	top: 0px;
+	top: 50px;
 	left: 0px;
+	z-index: 99;
 
 	width: 100%;
 	height: 100%;
 	text-align: center;
 	background-color: rgba(0, 0, 0, 0.5);
-	display: none;
+	
 }
 
-#loading > img { padding-top: 25px; }
+#loading > img { padding-top: 100px; }
 
 
 /* ===================== */
