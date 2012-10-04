@@ -104,21 +104,6 @@ a:hover { border-bottom: 1px solid #999; }
 	border-width: 0px;
 }
 
-#mask {
-	width: 800px;
-	height: 600px;
-
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 3;
-
-	background-color: transparent;
-
-	border: 1px solid rgba(0, 0, 0, 0.4);
-	border-width: 0px;
-}
-
 
 /* ===================== */
 /* === TOOLBAR ========= */
