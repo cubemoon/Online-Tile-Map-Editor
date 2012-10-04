@@ -14,12 +14,26 @@ body {
 }
 
 a {
-	color: #999;
+	color: #FFF;
+	text-shadow: 0px -1px #333;
 	text-decoration: none;
-	border-bottom: 1px dotted #999;
+	
+	background-color: #666;
+	border-top: 2px solid #999;
+
+	padding: 2px 6px;
+	border-radius: 5px;
 }
 
-a:hover { border-bottom: 1px solid #999; }
+a:hover {
+	background-color: #669900;
+	border-top: 2px solid #99CC00;
+}
+
+.remove:hover {
+	border-color: #C00 !important;
+	background-color: #900 !important;
+}
 
 #contextmenu {
 	position: absolute;
@@ -336,11 +350,6 @@ ul#layer_list > li > input[type=text][readonly] {
 	user-select: none;
 	selectstart: false;
 	cursor: pointer;
-}
-
-li#layer-remove:hover {
-	border-top: 1px solid #C00;
-	background-color: #900;
 }
 
 
