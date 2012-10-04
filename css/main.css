@@ -122,6 +122,7 @@ a:hover { border-bottom: 1px solid #999; }
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	z-index: 99;
 }
 
 #toolbar > div {
