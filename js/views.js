@@ -165,11 +165,11 @@ var TilesetCollectionView = Backbone.View.extend({
 			// Only display the first one
 			if (i == 0) {
 				for (var i = 0, l = tileset.get("tiles").length; i < l; i++) {
-					$("#tilesets #tiles > div").append(tileset.get("tiles")[i]);
-					if (i % Math.floor(w / tw) == tw+3) { $("#tilesets #tiles > div").append("<br>"); }
+					$("#tiles_container").append(tileset.get("tiles")[i]);
+					if (i % Math.floor(w / tw) == tw+3) { $("#tiles_container").append("<br>"); }
 				}
 
-				$("#tilesets #tiles > div").css("width", (w + (Math.floor(w / tw)*2)) + "px");
+				$("#tiles_container").css("width", (w + (Math.floor(w / tw)*2)) + "px");
 			}
 
 			$("select[name=tileset_select]").append("<option>" + tileset.get("name") + "</option>");
@@ -180,7 +180,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	changeTileset: function(e) {
 
-		$("#tilesets #tiles > div").html("");
+		$("#tiles_container").html("");
 		if (this.collection.models.length == 0) { return; }
 
 		var id = !e ? this.collection.models.length-1 : $(e.target).find("option:selected").index();
@@ -191,13 +191,13 @@ var TilesetCollectionView = Backbone.View.extend({
 		for (var i = 0, l = this.collection.models[id].get("tiles").length; i < l; i++) {
 
 			var img = this.collection.models[id].get("tiles")[i];
-			$("#tilesets #tiles > div").append(img);
+			$("#tiles_container").append(img);
 
 			// TODO find out why +3 is neccessary :D
-			if (i % Math.floor(w / tw) == tw+3) { $("#tilesets #tiles > div").append("<br>"); }
+			if (i % Math.floor(w / tw) == tw+3) { $("#tiles_container").append("<br>"); }
 		}
 
-		$("#tilesets #tiles > div").css("width", (w + (Math.floor(w / tw)*2)) + "px");
+		$("#tiles_container").css("width", (w + (Math.floor(w / tw)*2)) + "px");
 		this.$el.find("select[name=tileset_select] option:eq(" + id + ")").attr("selected", true);
 	},
 
