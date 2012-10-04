@@ -20,6 +20,15 @@ window.onload = function() {
 		cssOpen: '',
 		speed: 200
 	});
+
+	$(document).on("mousewheel", function(e, delta) {
+		if (window.drag) {
+			var zoom = parseFloat($("#container").css("zoom"), 10) || 1;
+			zoom += delta*0.1;
+			console.log(zoom);
+			$("#container").css("zoom", zoom);
+		}
+	});
 }
 
 function init() {
