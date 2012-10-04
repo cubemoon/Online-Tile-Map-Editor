@@ -408,7 +408,7 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	handleMouseDown: function(e) {
-		if ((e === true || (e && e.which == 1)) && !window.drag) {
+		if ((e === true || (e && e.which == 1)) && !window.drag && this.model.get("layer_view").collection.length) {
 			window.mousedown = true;
 
 			var x = this.model.get("cursor")[0];
@@ -437,6 +437,8 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	handleMovement: function(e) {
+
+		if (!this.model.get("tileset_view").collection.length) { return; }
 
 		var x = e.pageX;
 		var y = e.pageY;
