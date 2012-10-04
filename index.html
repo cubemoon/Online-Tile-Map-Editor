@@ -55,7 +55,12 @@
 						<table>
 							<tr>
 								<td>File</td>
-								<td><input type="file" name="tileset_file"></td>
+								<td>
+									<div id="file_container">
+										<input type="button" value="choose tileset" id="file_overlay"></div>
+										<input type="file" name="tileset_file">
+									</div>
+								</td>
 							</tr>
 							<tr>
 								<td>Tile Width</td>
@@ -70,11 +75,11 @@
 								<td><input type="number" name="tile_margin" value="0"></td>
 							</tr>
 							<tr>
-								<td>Tile Alpha (format: R, G, B)</td>
-								<td><input type="text" name="tile_alpha" value=""></td>
+								<td>Tile Alpha</td>
+								<td><input type="text" name="tile_alpha" value="" maxlength="11"></td>
 							</tr>
 							<tr>
-								<td colspan="2"><input type="button" value="add" id="tileset_add"></td>
+								<td colspan="2"><input type="button" value="add tileset" id="tileset_add"></td>
 							</tr>
 						</table>
 					</div><br>

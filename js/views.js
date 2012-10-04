@@ -279,10 +279,11 @@ var TilesetCollectionView = Backbone.View.extend({
 	},
 
 	dialog_add: function() {
-		$("#dialog_tileset").dialog();
+		$("#dialog_tileset").dialog({ width: "200px" });
 	},
 
 	cacheFiles: function(e) {
+		$("#dialog_tileset #file_overlay").val(e.target.files[0].name);
 		window.cachedFiles = e.target.files;
 	},
 
