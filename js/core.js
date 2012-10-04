@@ -23,10 +23,13 @@ window.onload = function() {
 
 	$(document).on("mousewheel", function(e, delta) {
 		if (window.drag) {
-			var zoom = parseFloat($("#container").css("zoom"), 10) || 1;
-			zoom += delta*0.1;
-			console.log(zoom);
-			$("#container").css("zoom", zoom);
+			var zoom = window.zoom || 1;
+			zoom += delta === 1 ? 0.1 : -0.1;
+			$("#container").css("-moz-transform", "scale(" + zoom + ")");
+			$("#container").css("-webkit-transform", "scale(" + zoom + ")");
+			$("#container").css("-ms-transform", "scale(" + zoom + ")");
+			$("#container").css("-o-transform", "scale(" + zoom + ")");
+			window.zoom = zoom;
 		}
 	});
 }
