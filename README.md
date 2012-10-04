@@ -30,3 +30,13 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
   * [HTML5 FileReader API](http://www.w3.org/TR/FileAPI/#dfn-filereader)
   * [Backbone.js](http://backbonejs.org/), [Underscore.js](http://underscorejs.org/)
   * [jQuery](http://jquery.com/), [jQuery Ui](http://jqueryui.com/)
+
+-----
+
+###Browser Support
+
+  * Google Chrome
+  * Mozilla Firefox
+  * Opera (latest)
+
+(IE9 is missing the the FileReader API, upload via URL or Silverlight might be a possible solution)
