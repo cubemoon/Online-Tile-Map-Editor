@@ -9,7 +9,12 @@
 $(':not(input,select,textarea)').disableSelection();
 
 $(document).ready(function() {
-	include(["js/models.js", "js/views.js", "js/collections.js"], init);
+
+	// Doesn't always wait for scripts to be loaded :/
+	// include(["js/models.js", "js/views.js", "js/collections.js"], init);
+
+	init();
+
 	$("#toolbar > div > h2").collapsible({
 		// custom scrollbars fail if closed
 		defaultOpen: 'section1,section2,section3',
