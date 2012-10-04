@@ -21,6 +21,45 @@ a {
 
 a:hover { border-bottom: 1px solid #999; }
 
+#contextmenu {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 99;
+
+	border: 1px solid #111;
+	list-style: none;
+}
+
+#contextmenu li {
+	padding: 2px 5px;
+
+	color: #FFF;
+	text-shadow: -1px 0px #333;
+	font-size: 12px;
+
+	background-color: #666;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #333;
+
+	cursor: pointer;
+}
+
+#contextmenu li:hover {
+	border-top: 1px solid #99CC00;
+	background-color: #669900;
+}
+
+#contextmenu > li:hover ul {
+	position: absolute;
+	left: 100%;
+	margin-top: -19px;
+}
+
+#contextmenu li:last-child { border-bottom: 0px; }
+#contextmenu > li > ul > li { display: none; }
+#contextmenu > li:hover ul > li { display: block !important; }
+
 
 /* ===================== */
 /* === CANVAS ========== */
@@ -142,7 +181,7 @@ a:hover { border-bottom: 1px solid #999; }
 	font-weight: 400;
 	line-height: 20px;
 	letter-spacing: 0px;
-	background-color: #666;
+	background-color: #669900;
 
 	background-image: url("../img/icons/collapse.png"), url("../img/gradient.svg");
 
@@ -219,18 +258,17 @@ a:hover { border-bottom: 1px solid #999; }
 
 #tilesets select[name=tileset_select] option { color: #333; }
 
-#tilesets #tiles {
-	height: 200px;
-}
+#tilesets #tiles { height: 200px; }
 
-#tilesets #tiles img {
+#tiles_container img {
+	position: relative;
 	display: inline;
 	border: 1px solid #333;
 	cursor: pointer;
 }
 
-#tilesets #tiles { line-height: 0px; }
-#tilesets #tiles img:hover { border: 1px solid #FFF; }
+#tiles { line-height: 0px; }
+#tiles_container img:hover { border: 1px solid #FFF; }
 
 #loading {
 	position: absolute;
@@ -257,10 +295,7 @@ ul#layer_list {
 	list-style: none;
 }
 
-ul#layer_list li {
-	color: #CCC;
-	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
-
+ul#layer_list > li {
 	height: 10px;
 	position: relative;
 
@@ -271,17 +306,17 @@ ul#layer_list li {
 	border-top: 1px solid #999;
 	border-bottom: 1px solid #333;
 
-	background-image: url("../img/icons/eye_open.png");
+	background-image: url("../img/icons/eye_open.png"), url("../img/icons/cog.png");
 	background-repeat: no-repeat;
-	background-position: 10px 50%;
+	background-position: 10px center, 193px center;
 
 	cursor: pointer;
 }
 
-ul#layer_list li:last-child { border-bottom: 0px; }
-ul#layer_list li.hide { background-image: url("../img/icons/eye_closed.png"); }
+ul#layer_list > li:last-child { border-bottom: 0px; }
+ul#layer_list > li.hide { background-image: url("../img/icons/eye_closed.png"), url("../img/icons/cog.png"); }
 
-#layer_list input[type=text] {
+ul#layer_list > li > input[type=text] {
 	color: #CCC;
 	width: 164px;
 
@@ -298,9 +333,9 @@ ul#layer_list li.hide { background-image: url("../img/icons/eye_closed.png"); }
 	border-radius: 0px;
 }
 
-#layer_list li.active { background-color: #564; }
+ul#layer_list > li.active { background-color: #564; }
 
-#layer_list input[readonly] {
+ul#layer_list > li > input[type=text][readonly] {
 	color: #CCC;
 	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
 	font-size: 12px;
@@ -318,6 +353,10 @@ ul#layer_list li.hide { background-image: url("../img/icons/eye_closed.png"); }
 	cursor: pointer;
 }
 
+li#layer-remove:hover {
+	border-top: 1px solid #C00;
+	background-color: #900;
+}
 
 /* ===================== */
 /* === SETTINGS ======== */

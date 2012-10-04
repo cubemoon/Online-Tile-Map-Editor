@@ -54,13 +54,78 @@ var LayerCollectionView = Backbone.View.extend({
 
 		$("#layer_list").sortable({ axis: "y", cancel: "input:not([readonly])"});
 		$("#layer_list").bind("sortchange", { self: this }, this.sortByIndex);
+
+		$("body").on("mousedown", function(e) {
+			if ($(e.target).parent().attr("id") != "contextmenu") {
+				if ($("body #contextmenu").length)
+				{ $("body #contextmenu").remove(); }
+			}
+		});
+
+		$("#layer-add").on("click", { self: this }, this.addLayer);
 	},
 
 	events: {
 		"click li, li > input": "handleClick"
 	},
 
+	addLayer: function(e) {
+		var self = e.data.self;
+		var name = prompt("Enter layer name:");
+
+		if (name.length < 3) {
+			alert("Name too short!");
+			return;
+		}
+
+		self.collection.add({ name: name, index: self.collection.models.length });
+		self.render();
+	},
+
+	removeLayer: function(e) {
+		var self = e.data.self;
+		var target = window.contextTarget;
+		var input = target.tagName.toLowerCase() == "input" ? target : $(target).children();
+		var name = $(input).val();
+
+		self.collection.each(function(layer) {
+			if (layer.get("name") == name) {
+				self.collection.remove(layer);
+				return false;
+			}
+		}, self);
+
+		$(input).parent().remove();
+		$("body #contextmenu").remove();
+
+		self.sortByIndex();
+	},
+
+	renameLayer: function(e) {
+		var self = e.data.self;
+		var target = window.contextTarget;
+		var input = target.tagName.toLowerCase() == "input" ? target : $(target).children();
+		var name = $(input).val();
+		var new_name = prompt("Enter new name (min 3 chars)");
+
+		if (new_name.length < 3) {
+			alert("Name too short!");
+			return;
+		}
+
+		self.collection.each(function(layer) {
+			if (layer.get("name") == name) {
+				layer.set("name", new_name);
+				return false;
+			}
+		}, self);
+
+		$(input).val(new_name);
+		$("body #contextmenu").remove();
+	},
+
 	render: function() {
+		this.$el.html("");
 		this.collection.each(function(layer) {
 			var classNames = layer.get("active") ? "layer active" : "layer";
 			// templating is unnecessary
@@ -79,15 +144,28 @@ var LayerCollectionView = Backbone.View.extend({
 			{ layer = module; }
 		}, this);
 
-		var x = e.pageX - li.offsetLeft;
-		var y = e.pageY - li.offsetTop;
+		var x = e.pageX - $(li).offset().left;
+		var y = e.pageY - $(li).offset().top;
 
 		// Toggle visibillity
 		if (x >= 10 && x <= 26 && y >= 10 && y <= 26) {
 			$(li).hasClass("hide") ? $(li).removeClass("hide") : $(li).addClass("hide");
 			layer.set("visible", $(li).hasClass("hide") ? false : true);
 			$("#" + name).toggle();
-			
+
+		// Display layer settings
+		} else if (x >= 195 && x <= 204 && y >= 7 && y <= 26 && !$("#contextmenu").length) {
+			var template = _.template($("#cm_layer").html());
+
+			$("body").append(template);
+			$("body #contextmenu").css("left", e.pageX + "px");
+			$("body #contextmenu").css("top", e.pageY + "px");
+
+			window.contextTarget = e.target;
+
+			$("#layer-remove").on("click", { self: this }, this.removeLayer);
+			$("#layer-rename").on("click", { self: this }, this.renameLayer);
+
 		// Set active
 		} else {
 			this.collection.each(function(module) { module.set("active", false); });
@@ -100,7 +178,7 @@ var LayerCollectionView = Backbone.View.extend({
 
 	// Sets each layers index properly according to li order
 	sortByIndex: function(e, ui) {
-		var self = e.data.self;
+		var self = e ? e.data.self : this;
 
 		var list = $("#layer_list").clone();
 		var drag_name = ui ? $(ui.item).children().val() : "";
@@ -190,9 +268,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 		for (var i = 0, l = this.collection.models[id].get("tiles").length; i < l; i++) {
 
-			var img = this.collection.models[id].get("tiles")[i];
-			$("#tiles_container").append(img);
-
+			$("#tiles_container").append(this.collection.models[id].get("tiles")[i]);
 			// TODO find out why +3 is neccessary :D
 			if (i % Math.floor(w / tw) == tw+3) { $("#tiles_container").append("<br>"); }
 		}

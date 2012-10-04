@@ -20,6 +20,13 @@
 
 		<script src="js/utils.js"></script>
 		<script src="js/core.js"></script>
+
+		<script type="text/template" id="cm_layer">
+			<ul id="contextmenu">
+				<li id="layer-rename">Rename</li>
+				<li id="layer-remove">Remove</li>
+			</ul>
+		</script>
 	</head>
 
 	<body>
@@ -77,7 +84,9 @@
 
 				<div>
 					<ul id="layer_list">
-					</ul>
+					</ul><br>
+					
+					<a href="#" id="layer-add">Add layer</a>
 				</div>
 			</div>
 
