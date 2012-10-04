@@ -460,7 +460,6 @@ ul#layer_list > li > input[type=text][readonly] {
 
 .ui-dialog-titlebar a:hover { border-bottom: 1px solid #FFF; }
 
-
 .ui-dialog table td {
 	font-size: 12px;
 	padding-right: 10px;
@@ -471,31 +470,39 @@ ul#layer_list > li > input[type=text][readonly] {
 
 .ui-dialog table tr:last-child td { padding-bottom: 0px; }
 
-#dialog_tileset input {
-	width: 100px !important;
-	height: 20px;
-	overflow: hidden;
-}
 
-#dialog_tileset input[type=text] {
-	font-size: 10px;
+/* ===================== */
+/* === MISC ============ */
+/* ===================== */
+
+#dialog_tileset input {
+	width: 90px !important;
+	height: 20px;
+	padding: 2px 5px;
+	overflow: hidden;
 }
 
 #dialog_tileset input[type=button] {
 	width: 100% !important;
-	height: auto;
+	height: 25px;
 	padding: 2px 5px;
 }
 
 #dialog_tileset input[type=file] {
 	position: relative;
+	height: 20px;
 	opacity: 0;
 	z-index: 2;
 }
 
-#file_container { position: relative; }
+#dialog_tileset #file_container { position: relative; }
 
-#file_overlay {
+#dialog_tileset #file_overlay {
 	position: absolute;
 	top: 0px;
+}
+
+.hint {
+	cursor: help;
+	border-bottom: 1px dotted #000;
 }
