@@ -8,6 +8,13 @@
 
 $(':not(input,select,textarea)').disableSelection();
 
+window.onresize = function() {
+	var left = (window.innerWidth / 2) - 250;
+	var top = (window.innerHeight / 2) - 300;
+	$("#container").css("left", left + "px");
+	$("#container").css("top", top + "px");
+};
+
 window.onload = function() {
 	//include(["js/models.js", "js/views.js", "js/collections.js"], init);
 
