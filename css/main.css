@@ -450,8 +450,12 @@ ul#layer_list > li > input[type=text][readonly] {
 
 .ui-dialog-titlebar a {
 	color: #FFF;
+	background-color: transparent;
 	text-decoration: none;
+	border: 0px;
 	border-bottom: 1px dotted #FFF;
+	border-radius: 0px;
+	padding: 0px;
 }
 
 .ui-dialog-titlebar a:hover { border-bottom: 1px solid #FFF; }
