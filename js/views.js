@@ -363,14 +363,8 @@ var CanvasView = Backbone.View.extend({
 	el: $("body"),
 
 	initialize: function() {
-
 		$("#container").draggable({ disabled: true });
-
-		$("#viewport").draggable({
-			disabled: true,
-			//grid: [tilesets.tile.width, tilesets.tile.height],
-			drag: this.updateBorderWidth,
-		});
+		$("#viewport").draggable({ disabled: true });
 	},
 
 	events: {
@@ -391,24 +385,11 @@ var CanvasView = Backbone.View.extend({
 		this.model.set("selection", $(e.target).clone()[0]);
 	},
 
-	updateBorderWidth: function() {
-		var vw = parseInt($("#mask").css("width"), 10);
-		var vh = parseInt($("#mask").css("height"), 10);
-		var cw = parseInt($("#canvas").attr("width"), 10);
-		var ch = parseInt($("#canvas").attr("height"), 10);
-		var ol = parseInt($("#viewport").css("left"), 10);
-		var ot = parseInt($("#viewport").css("top"), 10);
-
-		var bl = (ol > 0 ? ol : 0) + "px ";
-		var br = (cw - vw - ol) + "px ";
-		var bt = (ot > 0 ? ot : 0) + "px ";
-		var bb = (ch - vh - ot) + "px ";
-
-		$("#mask").css("borderWidth", bt + br + bb + bl);
-	},
-
 	handleMouseDown: function(e) {
-		if ((e === true || (e && e.which == 1)) && !window.drag && this.model.get("layer_view").collection.length) {
+		if (
+			e.which == 1 && $(e.target).attr("id") == "viewport" &&
+			!window.drag && this.model.get("layer_view").collection.length
+		) {
 			window.mousedown = true;
 
 			var x = this.model.get("cursor")[0];
@@ -431,9 +412,7 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	handleMouseUp: function(e) {
-		if (e.which == 1) {
-			window.mousedown = false;
-		}
+		if (e.which == 1) { window.mousedown = false; }
 	},
 
 	handleMovement: function(e) {
@@ -454,7 +433,7 @@ var CanvasView = Backbone.View.extend({
 
 		this.model.set("cursor", [sx, sy]);
 
-		if (window.mousedown) { this.handleMouseDown(true); }
+		if (window.mousedown) { this.handleMouseDown(e); }
 
 		this.model.draw();
 	},
