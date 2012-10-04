@@ -73,8 +73,8 @@ var LayerCollectionView = Backbone.View.extend({
 		var self = e.data.self;
 		var name = prompt("Enter layer name:");
 
-		if (name.length < 3) {
-			alert("Name too short!");
+		if (!name || name.length < 3) {
+			if (name) { alert("Name too short!"); }
 			return;
 		}
 
@@ -108,8 +108,8 @@ var LayerCollectionView = Backbone.View.extend({
 		var name = $(input).val();
 		var new_name = prompt("Enter new name (min 3 chars)");
 
-		if (new_name.length < 3) {
-			alert("Name too short!");
+		if (!new_name || new_name.length < 3) {
+			if (new_name) { alert("Name too short!"); }
 			return;
 		}
 
