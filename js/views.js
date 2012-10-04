@@ -231,7 +231,8 @@ var TilesetCollectionView = Backbone.View.extend({
 	events: {
 		"change select[name=tileset_select]": "changeTileset",
 		"click #tileset_add_dialog": "dialog_add",
-		"click #tileset_remove": "removeTileset"
+		"click #tileset_remove": "removeTileset",
+		"keydown #tiles_container": "handleKeyDown"
 	},
 
 	// Loads up default tilesets
@@ -347,6 +348,14 @@ var TilesetCollectionView = Backbone.View.extend({
 	getActive: function() {
 		var id = $("#tilesets select[name=tileset_select] option:selected").index();
 		return this.collection.models[id];
+	},
+
+	// Prevent scrolling via spacebar in tile browser
+	handleKeyDown: function(e) {
+		console.log(1);
+		if (e.keyCode == 32) {
+			e.preventDefault();
+		}
 	}
 });
 
@@ -356,10 +365,11 @@ var CanvasView = Backbone.View.extend({
 	initialize: function() {
 
 		$("#container").draggable({ disabled: true });
+
 		$("#viewport").draggable({
 			disabled: true,
 			//grid: [tilesets.tile.width, tilesets.tile.height],
-			drag: this.updateBorderWidth
+			drag: this.updateBorderWidth,
 		});
 	},
 
@@ -398,7 +408,7 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	handleMouseDown: function(e) {
-		if (e === true || (e && e.which == 1)) {
+		if ((e === true || (e && e.which == 1)) && !window.drag) {
 			window.mousedown = true;
 
 			var x = this.model.get("cursor")[0];
@@ -455,6 +465,7 @@ var CanvasView = Backbone.View.extend({
 			$("#container").css("cursor", "-moz-grab");
 			$("#container").css("cursor", "-o-grab");
 			$("#container").draggable("option", "disabled", false);
+			window.drag = true;
 
 		} else if (e.keyCode == 32 && e.ctrlKey) {
 			e.preventDefault();
@@ -463,11 +474,13 @@ var CanvasView = Backbone.View.extend({
 			$("#viewport").css("cursor", "-moz-grab");
 			$("#viewport").css("cursor", "-o-grab");
 			$("#viewport").draggable("option", "disabled", false);
+			window.drag = true;
 		}
 	},
 
 	handleKeyUp: function(e) {
-		if (e.keyCode == 32 || e.ctrlKey) {
+		if (e.keyCode == 32) {
+			window.drag = false;
 			$("#container").css("cursor", "default");
 			$("#container").draggable("option", "disabled", true);
 			$("#viewport").draggable("option", "disabled", true);
