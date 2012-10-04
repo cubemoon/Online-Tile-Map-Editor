@@ -1,6 +1,6 @@
 var SettingsView = Backbone.View.extend({
 
-	el: $("#settings"),
+	el: "#settings",
 
 	initialize: function() {
 
@@ -47,7 +47,7 @@ var SettingsView = Backbone.View.extend({
 
 var LayerCollectionView = Backbone.View.extend({
 
-	el: $("ul#layer_list"),
+	el: "ul#layer_list",
 
 	initialize: function() {
 		this.render();
@@ -217,10 +217,11 @@ var LayerCollectionView = Backbone.View.extend({
 
 var TilesetCollectionView = Backbone.View.extend({
 
-	el: $("#tilesets"),
+	el: "#tilesets",
 
 	initialize: function() {
 		this.init();
+		this.$el.find("#tiles").jScrollPane();
 
 		// Doesn't seem to work inside events: {}
 		$("#dialog_tileset #tileset_add").on("click", { self: this }, this.addTileset);
@@ -254,7 +255,6 @@ var TilesetCollectionView = Backbone.View.extend({
 		}, this);
 
 		$("#loading").hide();
-		$("#tiles").jScrollPane();
 	},
 
 	changeTileset: function(e) {
@@ -352,6 +352,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	// Prevent scrolling via spacebar in tile browser
 	handleKeyDown: function(e) {
+		console.log(1);
 		if (e.keyCode == 32) {
 			e.preventDefault();
 		}
@@ -359,7 +360,7 @@ var TilesetCollectionView = Backbone.View.extend({
 });
 
 var CanvasView = Backbone.View.extend({
-	el: $("body"),
+	el: "body",
 
 	initialize: function() {
 		$("#container").draggable({ disabled: true });
@@ -385,6 +386,7 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	handleMouseDown: function(e) {
+		console.log(1);
 		if (
 			e.which == 1 && $(e.target).attr("id") == "viewport" &&
 			!window.drag && this.model.get("layer_view").collection.length
@@ -411,7 +413,9 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	handleMouseUp: function(e) {
-		if (e.which == 1) { window.mousedown = false; }
+		if (e.which == 1) {
+			window.mousedown = false;
+		}
 	},
 
 	handleMovement: function(e) {

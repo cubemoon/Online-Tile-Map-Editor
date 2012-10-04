@@ -8,10 +8,8 @@
 
 $(':not(input,select,textarea)').disableSelection();
 
-$(document).ready(function() {
-
-	// Doesn't always wait for scripts to be loaded :/
-	// include(["js/models.js", "js/views.js", "js/collections.js"], init);
+window.onload = function() {
+	//include(["js/models.js", "js/views.js", "js/collections.js"], init);
 
 	init();
 
@@ -22,7 +20,7 @@ $(document).ready(function() {
 		cssOpen: '',
 		speed: 200
 	});
-});
+}
 
 function init() {
 	if (!window.FileReader) { alert("Sorry, your browser doesn't support the HTML5 FileReader API.\nPlease use the latest version of Chrome, Firefox or Opera."); }
