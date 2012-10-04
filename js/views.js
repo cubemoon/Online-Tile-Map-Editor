@@ -299,8 +299,6 @@ var CanvasView = Backbone.View.extend({
 
 	selectTile: function(e) {
 		this.model.set("selection", $(e.target).clone()[0]);
-		$(e.target).siblings().removeClass("selected");
-		$(e.target).addClass("selected");
 	},
 
 	updateBorderWidth: function() {
