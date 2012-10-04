@@ -6,7 +6,7 @@
 	$("<style>#container { top: " + top + "px; left: " + left + "px; }</style>").appendTo("head");
 })();
 
-//$(':not(input,select,textarea)').disableSelection();
+$(':not(input,select,textarea)').disableSelection();
 
 window.onload = function() {
 	//include(["js/models.js", "js/views.js", "js/collections.js"], init);

@@ -130,6 +130,8 @@ var Tileset = Backbone.Model.extend({
 		var h = parseInt(img.height, 10);
 		var alpha = this.get("alpha");
 
+		console.log(alpha);
+
 		var buffer = document.createElement("canvas");
 		buffer.width = w;
 		buffer.height = h;

@@ -386,7 +386,6 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	handleMouseDown: function(e) {
-		console.log(1);
 		if (
 			e.which == 1 && $(e.target).attr("id") == "viewport" &&
 			!window.drag && this.model.get("layer_view").collection.length
