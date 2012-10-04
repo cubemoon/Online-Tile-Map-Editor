@@ -235,6 +235,7 @@ var TilesetCollectionView = Backbone.View.extend({
 				this.$el.find("select[name=tileset_select]").val(file.name).change();
 				this.changeTileset();
 				$("#dialog_tileset").dialog("close");
+				$("#loading").hide();
 			}, self]);
 		};
 

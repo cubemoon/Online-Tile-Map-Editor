@@ -397,3 +397,11 @@ ul#layer_list li.hide { background-image: url("../img/icons/eye_closed.png"); }
 	padding: 10px;
 	display: none;
 }
+
+.ui-dialog-titlebar a {
+	color: #FFF;
+	text-decoration: none;
+	border-bottom: 1px dotted #FFF;
+}
+
+.ui-dialog-titlebar a:hover { border-bottom: 1px solid #FFF; }
