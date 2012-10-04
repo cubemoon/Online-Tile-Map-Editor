@@ -13,6 +13,7 @@
 
 		<script src="js/plugins/jquery.mousewheel.min.js"></script>
 		<script src="js/plugins/jquery.jscrollpane.min.js"></script>
+		<script src="js/plugins/jquery.collapsible.min.js"></script>
 
 		<script src="js/libs/underscore.min.js"></script>
 		<script src="js/libs/backbone.min.js"></script>
@@ -28,12 +29,10 @@
 			<div id="mask"></div>
 			<div id="viewport"></div>
 		</div>
-
-		<div id="scrollbar"></div>
 		
 		<div id="toolbar">
 			<div id="tilesets">
-				<h2>Tilesets</h2>
+				<h2 id="section1">Tilesets</h2>
 
 				<div>
 					<div id="loading"><img src="img/icons/loading.gif" alt="loading"></div>
@@ -74,7 +73,7 @@
 			</div>
 
 			<div id="layers">
-				<h2>Layers</h2>
+				<h2 id="section2">Layers</h2>
 
 				<div>
 					<ul id="layer_list">
@@ -83,7 +82,7 @@
 			</div>
 
 			<div id="settings">
-				<h2>Settings</h2>
+				<h2 id="section3">Settings</h2>
 
 				<div>
 					Measurement: <input type="radio" name="measurement" value="pixels"> Pixels <input type="radio" name="measurement" value="tiles"> Tiles<br><br>

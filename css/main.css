@@ -156,7 +156,10 @@ a:hover { border-bottom: 1px solid #999; }
 	cursor: pointer;
 }
 
-#toolbar > div > h2.expand { background-image: url("../img/icons/expand.png"), url("../img/gradient.svg"); }
+#toolbar > div > h2.collapsed {
+	background-image: url("../img/icons/expand.png"), url("../img/gradient.svg");
+	border-radius: 3px;
+}
 
 #output > h2 {
 	background-image: url("../img/gradient.svg") !important;

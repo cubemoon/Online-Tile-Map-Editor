@@ -8,9 +8,15 @@
 
 $(':not(input,select,textarea)').disableSelection();
 
-
 $(document).ready(function() {
 	include(["js/models.js", "js/views.js", "js/collections.js"], init);
+	$("#toolbar > div > h2").collapsible({
+		// custom scrollbars fail if closed
+		defaultOpen: 'section1,section2',
+		cssClose: 'collapsed',
+		cssOpen: '',
+		speed: 200
+	});
 });
 
 function init() {
