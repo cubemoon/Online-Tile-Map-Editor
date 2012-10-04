@@ -16,6 +16,7 @@ A web based tile map editor for all kinds of 2d games.
   * Layers `(add, remove, (re)name, sort)`
   * Drawing `(multiple tile selection)`
   * Viewport `(for topdown/sidescrolling games)`
+  * Fancy Ui
 
 ##### Planned
 
