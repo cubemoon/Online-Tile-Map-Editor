@@ -22,6 +22,7 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
 ##### Planned
 
   * Save/Load `(JSON, XML, ...)`
+  * Zoom functionality
 
 -----
 
