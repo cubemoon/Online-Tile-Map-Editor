@@ -221,7 +221,6 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	initialize: function() {
 		this.init();
-		this.$el.find("#tiles").jScrollPane();
 
 		// Doesn't seem to work inside events: {}
 		$("#dialog_tileset #tileset_add").on("click", { self: this }, this.addTileset);
@@ -255,6 +254,7 @@ var TilesetCollectionView = Backbone.View.extend({
 		}, this);
 
 		$("#loading").hide();
+		$("#tiles").jScrollPane();
 	},
 
 	changeTileset: function(e) {
@@ -352,7 +352,6 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	// Prevent scrolling via spacebar in tile browser
 	handleKeyDown: function(e) {
-		console.log(1);
 		if (e.keyCode == 32) {
 			e.preventDefault();
 		}
