@@ -121,7 +121,8 @@ var Tileset = Backbone.Model.extend({
 
 	defaults: {
 		margin: 0,
-		alpha: null
+		alpha: null,
+		ready: false
 	},
 
 	setAlpha: function() {
@@ -202,10 +203,11 @@ var Tileset = Backbone.Model.extend({
 	},
 
 	ready: function(callback, bind) {
-		this.slice();
+		//this.slice();
+		this.set("ready", true);
 
-		if (this.has("ready")) {
-			var data = this.get("ready");
+		if (this.has("onready")) {
+			var data = this.get("onready");
 			data[0].call(data[1]);
 		}
 	}

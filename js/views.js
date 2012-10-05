@@ -316,7 +316,7 @@ var TilesetCollectionView = Backbone.View.extend({
 			], { at: index });
 
 			// Add to selectbox when the slicing operation is done
-			self.collection.models[index].set("ready", [function() {
+			self.collection.models[index].set("onready", [function() {
 				this.$el.find("select[name=tileset_select]").append("<option>" + file.name + "</option>");
 				this.$el.find("select[name=tileset_select]").val(file.name).change();
 				$("#dialog_tileset").dialog("close");

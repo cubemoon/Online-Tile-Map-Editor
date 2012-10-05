@@ -72,7 +72,7 @@ function init() {
 		var ready = false;
 
 		tileset_collection.each(function(tileset) {
-			if (!tileset.has("tiles")) {
+			if (!tileset.get("ready")) {
 				ready = false;
 				return false;
 			} else { ready = true; }
