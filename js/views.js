@@ -259,13 +259,17 @@ var TilesetCollectionView = Backbone.View.extend({
 	},
 
 	addTilesetClass: function() {
-		console.log(1);
 		var id = this.collection.models.length-1;
 		var style = document.createElement("style");
 		$(style).attr("id", "tsc_" + id);
 
 		var img = this.collection.models[id].get("src").src;
-		$(style).html(".ts_" + id + " { background-image: url('" + img + "'); }");
+		var css = ".ts_" + id + " {\n";
+		css += "width: " + window.tileSize[0] + "px;\n";
+		css += "height: " + window.tileSize[1] + "px;\n";
+		css += "background-image: url('" + img + "');\n";
+		css += "}";
+		$(style).append(css);
 		$("head").append(style);
 	},
 
@@ -276,7 +280,9 @@ var TilesetCollectionView = Backbone.View.extend({
 			var tileset = this.collection.models[id];
 			var w = tileset.get("tile_size")[0];
 			var h = tileset.get("tile_size")[1];
+
 			window.tileSize = [w, h];
+			if (e.isTrigger) { this.addTilesetClass(); }
 
 			$("#tileset_container").css("width", tileset.get("src").width + "px");
 			$("#tileset_container").css("height", tileset.get("src").height + "px");
@@ -286,6 +292,7 @@ var TilesetCollectionView = Backbone.View.extend({
 		} else { $("#tileset_container").css("backgroundImage", "none"); }
 
 		$("#canvas_selection").css("backgroundImage", "none");
+		this.$el.find("#tileset").jScrollPane();
 	},
 
 	addTileset: function(e) {
@@ -312,7 +319,6 @@ var TilesetCollectionView = Backbone.View.extend({
 			self.collection.models[index].set("ready", [function() {
 				this.$el.find("select[name=tileset_select]").append("<option>" + file.name + "</option>");
 				this.$el.find("select[name=tileset_select]").val(file.name).change();
-				this.addTilesetClass();
 				$("#dialog_tileset").dialog("close");
 				$("#loading").hide();
 			}, self]);

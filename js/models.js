@@ -258,8 +258,6 @@ var Canvas = Backbone.Model.extend({
 							$(div).css("position", "absolute");
 							$(div).css("left", (pos_x * window.tileSize[0]) + "px");
 							$(div).css("top", (pos_y * window.tileSize[1]) + "px");
-							$(div).css("width", window.tileSize[0] + "px");
-							$(div).css("height", window.tileSize[1] + "px");
 							$(div).css("backgroundPosition", (-(xy[0]*window.tileSize[0])) + "px" + " " + (-(xy[1]*window.tileSize[1])) + "px");
 							$("#layer_" + layer.get("name")).append(div);
 						} else {
