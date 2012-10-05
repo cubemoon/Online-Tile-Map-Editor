@@ -302,7 +302,28 @@ var TilesetCollectionView = Backbone.View.extend({
 		var tile_height = parseInt($("#dialog_tileset input[name=tile_height]").val(), 10);
 		var tile_margin = parseInt($("#dialog_tileset input[name=tile_margin]").val(), 10);
 		var tile_alpha = $("#dialog_tileset input[name=tile_alpha]").val();
-		tile_alpha = _.map(tile_alpha.split(","), function(num) { return parseInt(num, 10); });
+
+		// HEX
+		if (tile_alpha.match(/^#?(([0-9a-fA-F]{3}){1,2})$/)) {
+			var hex = tile_alpha.match(/^#?(([0-9a-fA-F]{3}){1,2})$/)[1];
+
+			if (hex.length == 3) {
+				tile_alpha = [
+					parseInt(hex[0]+hex[0], 16),
+					parseInt(hex[1]+hex[1], 16),
+					parseInt(hex[2]+hex[2], 16)
+				];
+
+			} else if (hex.length == 6) {
+				tile_alpha = [
+					parseInt(hex[0]+hex[1], 16),
+					parseInt(hex[2]+hex[3], 16),
+					parseInt(hex[4]+hex[6], 16)
+				];
+			}
+
+		// RGB
+		} else { tile_alpha = _.map(tile_alpha.split(","), function(num) { return parseInt(num, 10); }); }
 
 		var file = window.cachedFiles[0];
 		var reader = new FileReader();
@@ -361,7 +382,7 @@ var TilesetCollectionView = Backbone.View.extend({
 		if (e.type == "mousedown") {
 			if (!$("#selector").length)
 			{ $("#tileset_container").append("<div id='selector'></div>"); }
-		
+
 			$("#selector").css("left", x + "px");
 			$("#selector").css("top", y + "px");
 			$("#selector").css("width", window.tileSize[0] + "px");
@@ -439,8 +460,7 @@ var TilesetCollectionView = Backbone.View.extend({
 	dialog_add: function() { $("#dialog_tileset").dialog({ width: "200px" }); },
 
 	cacheFiles: function(e) {
-		if ("#tileset_container".files[0])
-		{ $("#dialog_tileset #file_overlay").val(e.target.files[0].name); }
+		$("#dialog_tileset #file_overlay").val(e.target.files[0].name);
 
 		window.cachedFiles = e.target.files;
 	}
