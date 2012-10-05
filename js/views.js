@@ -318,7 +318,7 @@ var TilesetCollectionView = Backbone.View.extend({
 				tile_alpha = [
 					parseInt(hex[0]+hex[1], 16),
 					parseInt(hex[2]+hex[3], 16),
-					parseInt(hex[4]+hex[5], 16)
+					parseInt(hex[5]+hex[6], 16)
 				];
 			}
 
