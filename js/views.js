@@ -355,8 +355,8 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	select: function(e) {
 
-		var x = Math.floor((e.pageX - $(e.target).offset().left) / window.tileSize[0]) * window.tileSize[0];
-		var y = Math.floor((e.pageY - $(e.target).offset().top) / window.tileSize[1]) * window.tileSize[1];
+		var x = Math.floor((e.pageX - $("#tileset_container").offset().left) / window.tileSize[0]) * window.tileSize[0];
+		var y = Math.floor((e.pageY - $("#tileset_container").offset().top) / window.tileSize[1]) * window.tileSize[1];
 
 		if (e.type == "mousedown") {
 
@@ -414,7 +414,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 			$("#canvas_selection").css("width", w + "px");
 			$("#canvas_selection").css("height", h + "px");
-			$("#canvas_selection").css("backgroundImage", $(e.target).css("backgroundImage"));
+			$("#canvas_selection").css("backgroundImage", $("#tileset_container").css("backgroundImage"));
 			$("#canvas_selection").css("backgroundPosition", (-sx) + "px" + " " + (-sy) + "px");
 		}
 	},
@@ -427,7 +427,7 @@ var TilesetCollectionView = Backbone.View.extend({
 	dialog_add: function() { $("#dialog_tileset").dialog({ width: "200px" }); },
 
 	cacheFiles: function(e) {
-		if (e.target.files[0])
+		if ("#tileset_container".files[0])
 		{ $("#dialog_tileset #file_overlay").val(e.target.files[0].name); }
 
 		window.cachedFiles = e.target.files;
