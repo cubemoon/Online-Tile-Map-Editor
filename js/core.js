@@ -6,7 +6,7 @@
 	$("<style>#container { top: " + top + "px; left: " + left + "px; }</style>").appendTo("head");
 })();
 
-$(':not(input,select,textarea)').disableSelection();
+$(':not(input,select,textarea), #container').disableSelection();
 
 window.onresize = function() {
 	var left = (window.innerWidth / 2) - 250;
@@ -39,6 +39,8 @@ window.onload = function() {
 			window.zoom = zoom;
 		}
 	});
+
+	$("#container *").on("dragstart", function(e) { e.preventDefault(); });
 }
 
 function init() {
