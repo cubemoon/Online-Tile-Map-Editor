@@ -359,8 +359,9 @@ var TilesetCollectionView = Backbone.View.extend({
 		var y = Math.floor((e.pageY - $("#tileset_container").offset().top) / window.tileSize[1]) * window.tileSize[1];
 
 		if (e.type == "mousedown") {
-
-			$("#tileset_container").append("<div id='selector'></div>"); 
+			if (!$("#selector").length)
+			{ $("#tileset_container").append("<div id='selector'></div>"); }
+		
 			$("#selector").css("left", x + "px");
 			$("#selector").css("top", y + "px");
 			$("#selector").css("width", window.tileSize[0] + "px");
@@ -368,28 +369,39 @@ var TilesetCollectionView = Backbone.View.extend({
 
 			window.selection = [[x, y], []];
 
-		} else if (e.type == "mousemove"&& window.selection) {
+		} else if (e.type == "mousemove") {
 
-			var sx = window.selection[0][0];
-			var sy = window.selection[0][1];
+			if (window.selection) {
 
-			var w = Math.abs((x-sx) + window.tileSize[0]);
-			var h = Math.abs((y-sy) + window.tileSize[1]);
+				var sx = window.selection[0][0];
+				var sy = window.selection[0][1];
 
-			if (sx <= x) {
-				$("#selector").css("left", sx + "px");
-				$("#selector").css("width", w + "px");
+				var w = Math.abs((x-sx) + window.tileSize[0]);
+				var h = Math.abs((y-sy) + window.tileSize[1]);
+
+				if (sx <= x) {
+					$("#selector").css("left", sx + "px");
+					$("#selector").css("width", w + "px");
+				} else {
+					$("#selector").css("left", x + "px");
+					$("#selector").css("width", (w + window.tileSize[0]*2)+ "px");
+				}
+
+				if (sy <= y) {
+					$("#selector").css("top", sy + "px");
+					$("#selector").css("height", h + "px");
+				} else {
+					$("#selector").css("top", y + "px");
+					$("#selector").css("height", (h + window.tileSize[1]*2)+ "px");
+				}
 			} else {
+				if (!$("#selector").length)
+				{ $("#tileset_container").append("<div id='selector'></div>"); }
+
 				$("#selector").css("left", x + "px");
-				$("#selector").css("width", (w + window.tileSize[0]*2)+ "px");
-			}
-
-			if (sy <= y) {
-				$("#selector").css("top", sy + "px");
-				$("#selector").css("height", h + "px");
-			} else {
 				$("#selector").css("top", y + "px");
-				$("#selector").css("height", (h + window.tileSize[1]*2)+ "px");
+				$("#selector").css("width", window.tileSize[0] + "px");
+				$("#selector").css("height", window.tileSize[1] + "px");
 			}
 
 		} else if (e.type == "mouseup") {
