@@ -12,11 +12,12 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
   
   * Tilesets `(add, remove, slice, margin, alpha channel)`
   * Layers `(add, remove, (re)name, sort)`
+  * Drawing `(multiple tile selection)`
 
 ##### In Progress
 
-  * Drawing `(multiple tile selection)`
   * Viewport `(for topdown/sidescrolling games)`
+  * Tools `select, fill, flip/rotate`
   * Fancy Ui
 
 ##### Planned
