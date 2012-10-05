@@ -50,8 +50,6 @@ var LayerCollectionView = Backbone.View.extend({
 	el: "ul#layer_list",
 
 	initialize: function() {
-		this.render();
-
 		$("#layer_list").sortable({ axis: "y", cancel: "input:not([readonly])"});
 		$("#layer_list").bind("sortchange", { self: this }, this.sortByIndex);
 
@@ -63,18 +61,19 @@ var LayerCollectionView = Backbone.View.extend({
 		});
 
 		$("#layer-add").on("click", { self: this }, this.addLayer);
+		this.render();
 	},
 
 	events: {
-		"click li, li > input": "handleClick"
+		"click li, li > input": "click"
 	},
 
 	addLayer: function(e) {
 		var self = e.data.self;
 		var name = prompt("Enter layer name:");
 
-		if (!name || name.length < 3) {
-			if (name) { alert("Name too short!"); }
+		if (!name || !name.match(/^[a-zA-Z_-][a-zA-Z0-9_-]{2,}$/)) {
+			if (name) { alert("Name invalid or too short!"); }
 			return;
 		}
 
@@ -97,6 +96,7 @@ var LayerCollectionView = Backbone.View.extend({
 
 		$(input).parent().remove();
 		$("body #contextmenu").remove();
+		$("#layer_" + name).remove();
 
 		self.sortByIndex();
 	},
@@ -127,13 +127,19 @@ var LayerCollectionView = Backbone.View.extend({
 	render: function() {
 		this.$el.html("");
 		this.collection.each(function(layer) {
-			var classNames = layer.get("active") ? "layer active" : "layer";
-			// templating is unnecessary
-			this.$el.append("<li class='" + classNames + "'><input type='text' value='" + layer.get("name") + "' readonly></li>");
+			var classNames = layer.get("active") ? " class='active'" : "";
+			this.$el.append("<li" + classNames + "><input type='text' value='" + layer.get("name") + "' readonly></li>");
+
+			if (!$("#layer_" + layer.get("name")).length) {
+				var div = document.createElement("div");
+				$(div).attr("class", "layer");
+				$(div).attr("id", "layer_" + layer.get("name"));
+				$("#canvas_tiles").append(div);
+			}
 		}, this);
 	},
 
-	handleClick: function(e) {
+	click: function(e) {
 
 		var li = e.target.tagName.toLowerCase() == "li" ? e.target : $(e.target).parent();
 		var name = $(li).find("input").val();
@@ -151,7 +157,7 @@ var LayerCollectionView = Backbone.View.extend({
 		if (x >= 10 && x <= 26 && y >= 10 && y <= 26) {
 			$(li).hasClass("hide") ? $(li).removeClass("hide") : $(li).addClass("hide");
 			layer.set("visible", $(li).hasClass("hide") ? false : true);
-			$("#" + name).toggle();
+			$("#layer_" + name).toggle();
 
 		// Display layer settings
 		} else if (x >= 195 && x <= 204 && y >= 7 && y <= 26 && !$("#contextmenu").length) {
@@ -189,10 +195,10 @@ var LayerCollectionView = Backbone.View.extend({
 			self.collection.each(function(layer) {
 				if (layer.get("name") == drag_name) {
 					layer.set("index", $(list).find(".ui-sortable-placeholder").index());
-					$("#" + layer.get("name")).css("zIndex", $(list).find(".ui-sortable-placeholder").index());
+					$("#layer_" + layer.get("name")).css("zIndex", $(list).find(".ui-sortable-placeholder").index());
 				} else if (layer.get("name") == name) {
 					layer.set("index", i);
-					$("#" + layer.get("name")).css("zIndex", i);
+					$("#layer_" + layer.get("name")).css("zIndex", i);
 				}
 
 			}, self);
@@ -221,7 +227,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	initialize: function() {
 		this.init();
-		this.$el.find("#tiles").jScrollPane();
+		this.$el.find("#tileset").jScrollPane();
 
 		// Doesn't seem to work inside events: {}
 		$("#dialog_tileset #tileset_add").on("click", { self: this }, this.addTileset);
@@ -232,61 +238,54 @@ var TilesetCollectionView = Backbone.View.extend({
 		"change select[name=tileset_select]": "changeTileset",
 		"click #tileset_add_dialog": "dialog_add",
 		"click #tileset_remove": "removeTileset",
-		"keydown #tiles_container": "handleKeyDown"
+		"mousedown #tileset_container": "select",
+		"mouseup #tileset_container": "select",
+		"mousemove #tileset_container": "select"
 	},
 
 	// Loads up default tilesets
 	init: function() {
-		this.collection.each(function(tileset, i) {
-			var w = parseInt(tileset.get("src").width, 10);
-			var tw = tileset.get("tile_size")[0];
+		var tileset = this.collection.models[0];
+		var w = tileset.get("tile_size")[0];
+		var h = tileset.get("tile_size")[1];
+		window.tileSize = [w, h];
 
-			// Only display the first one
-			if (i == 0) {
-				for (var i = 0, l = tileset.get("tiles").length; i < l; i++) {
-					$("#tiles_container").append(tileset.get("tiles")[i]);
-					if (i % Math.floor(w / tw) == tw+3) { $("#tiles_container").append("<br>"); }
-				}
-
-				$("#tiles_container").css("width", (w + (Math.floor(w / tw)*2)) + "px");
-			}
-
-			$("select[name=tileset_select]").append("<option>" + tileset.get("name") + "</option>");
-		}, this);
-
+		$("#tileset_container").css("width", tileset.get("src").width + "px");
+		$("#tileset_container").css("height", tileset.get("src").height + "px");
+		$("#tileset_container").css("backgroundImage", "url('" + tileset.get("src").src + "')");
+		$("select[name=tileset_select]").append("<option>" + tileset.get("name") + "</option>");
+		this.addTilesetClass();
 		$("#loading").hide();
+	},
+
+	addTilesetClass: function() {
+		console.log(1);
+		var id = this.collection.models.length-1;
+		var style = document.createElement("style");
+		$(style).attr("id", "tsc_" + id);
+
+		var img = this.collection.models[id].get("src").src;
+		$(style).html(".ts_" + id + " { background-image: url('" + img + "'); }");
+		$("head").append(style);
 	},
 
 	changeTileset: function(e) {
 
-		$("#tiles_container").html("");
-		if (this.collection.models.length == 0) { return; }
+		if (this.collection.models.length) {
+			var id = !e ? this.collection.models.length-1 : $(e.target).find("option:selected").index();
+			var tileset = this.collection.models[id];
+			var w = tileset.get("tile_size")[0];
+			var h = tileset.get("tile_size")[1];
+			window.tileSize = [w, h];
 
-		var id = !e ? this.collection.models.length-1 : $(e.target).find("option:selected").index();
-		var w = parseInt(this.collection.models[id].get("src").width, 10);
-		var h = parseInt(this.collection.models[id].get("src").height, 10);
-		var tw = this.collection.models[id].get("tile_size")[id];
+			$("#tileset_container").css("width", tileset.get("src").width + "px");
+			$("#tileset_container").css("height", tileset.get("src").height + "px");
+			$("#tileset_container").css("backgroundImage", "url('" + tileset.get("src").src + "')");
+			$("select[name=tileset_select] option:eq(" + id + ")").attr("selected", true);
 
-		for (var i = 0, l = this.collection.models[id].get("tiles").length; i < l; i++) {
+		} else { $("#tileset_container").css("backgroundImage", "none"); }
 
-			$("#tiles_container").append(this.collection.models[id].get("tiles")[i]);
-			// TODO find out why +3 is neccessary :D
-			if (i % Math.floor(w / tw) == tw+3) { $("#tiles_container").append("<br>"); }
-		}
-
-		$("#tiles_container").css("width", (w + (Math.floor(w / tw)*2)) + "px");
-		this.$el.find("select[name=tileset_select] option:eq(" + id + ")").attr("selected", true);
-	},
-
-	dialog_add: function() {
-		$("#dialog_tileset").dialog({ width: "200px" });
-	},
-
-	cacheFiles: function(e) {
-		if (e.target.files[0])
-		{ $("#dialog_tileset #file_overlay").val(e.target.files[0].name); }
-	
-		window.cachedFiles = e.target.files;
+		$("#canvas_selection").css("backgroundImage", "none");
 	},
 
 	addTileset: function(e) {
@@ -313,7 +312,7 @@ var TilesetCollectionView = Backbone.View.extend({
 			self.collection.models[index].set("ready", [function() {
 				this.$el.find("select[name=tileset_select]").append("<option>" + file.name + "</option>");
 				this.$el.find("select[name=tileset_select]").val(file.name).change();
-				this.changeTileset();
+				this.addTilesetClass();
 				$("#dialog_tileset").dialog("close");
 				$("#loading").hide();
 			}, self]);
@@ -348,17 +347,84 @@ var TilesetCollectionView = Backbone.View.extend({
 		this.changeTileset();
 	},
 
+	select: function(e) {
+
+		var x = Math.floor((e.pageX - $(e.target).offset().left) / window.tileSize[0]) * window.tileSize[0];
+		var y = Math.floor((e.pageY - $(e.target).offset().top) / window.tileSize[1]) * window.tileSize[1];
+
+		if (e.type == "mousedown") {
+
+			$("#tileset_container").append("<div id='selector'></div>"); 
+			$("#selector").css("left", x + "px");
+			$("#selector").css("top", y + "px");
+			$("#selector").css("width", window.tileSize[0] + "px");
+			$("#selector").css("height", window.tileSize[1] + "px");
+
+			window.selection = [[x, y], []];
+
+		} else if (e.type == "mousemove"&& window.selection) {
+
+			var sx = window.selection[0][0];
+			var sy = window.selection[0][1];
+
+			var w = Math.abs((x-sx) + window.tileSize[0]);
+			var h = Math.abs((y-sy) + window.tileSize[1]);
+
+			if (sx <= x) {
+				$("#selector").css("left", sx + "px");
+				$("#selector").css("width", w + "px");
+			} else {
+				$("#selector").css("left", x + "px");
+				$("#selector").css("width", (w + window.tileSize[0]*2)+ "px");
+			}
+
+			if (sy <= y) {
+				$("#selector").css("top", sy + "px");
+				$("#selector").css("height", h + "px");
+			} else {
+				$("#selector").css("top", y + "px");
+				$("#selector").css("height", (h + window.tileSize[1]*2)+ "px");
+			}
+
+		} else if (e.type == "mouseup") {
+			$("#tileset_container #selector").remove();
+
+			var s = window.selection;
+
+			s[1][0] = x;
+			s[1][1] = y;
+
+			var sx = s[0][0] < s[1][0] ? s[0][0] : s[1][0];
+			var sy = s[0][1] < s[1][1] ? s[0][1] : s[1][1];
+			var ex = s[0][0] > s[1][0] ? s[0][0] : s[1][0];
+			var ey = s[0][1] > s[1][1] ? s[0][1] : s[1][1];
+
+			window.selection = [[sx, sy], [ex, ey]];
+
+			var w = (ex-sx) + window.tileSize[0];
+			var h = (ey-sy) + window.tileSize[1];
+
+			var id = $("select[name=tileset_select] option:selected").index();
+
+			$("#canvas_selection").css("width", w + "px");
+			$("#canvas_selection").css("height", h + "px");
+			$("#canvas_selection").css("backgroundImage", $(e.target).css("backgroundImage"));
+			$("#canvas_selection").css("backgroundPosition", (-sx) + "px" + " " + (-sy) + "px");
+		}
+	},
+
 	getActive: function() {
 		var id = $("#tilesets select[name=tileset_select] option:selected").index();
 		return this.collection.models[id];
 	},
 
-	// Prevent scrolling via spacebar in tile browser
-	handleKeyDown: function(e) {
-		console.log(1);
-		if (e.keyCode == 32) {
-			e.preventDefault();
-		}
+	dialog_add: function() { $("#dialog_tileset").dialog({ width: "200px" }); },
+
+	cacheFiles: function(e) {
+		if (e.target.files[0])
+		{ $("#dialog_tileset #file_overlay").val(e.target.files[0].name); }
+
+		window.cachedFiles = e.target.files;
 	}
 });
 
@@ -371,79 +437,70 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	events: {
-		"mousedown": "handleMouseDown",
-		"mouseup": "handleMouseUp",
-		"mousemove": "handleMovement",
-		"keydown": "handleKeyDown",
-		"keyup": "handleKeyUp",
-		"change #tilesets select[name=tileset_select]": "updateGrid",
-		"click #tilesets #tiles img": "selectTile"
+		"mousedown #viewport": "updateMap",
+		"mouseup": "mouseup",
+		"mousemove #viewport": "updateCursor",
+		"keydown": "keydown",
+		"keyup": "keyup",
+		"change #tilesets select[name=tileset_select]": "updateGrid"
 	},
 
-	updateGrid: function() {
-		this.model.update_grid();
-	},
-
-	selectTile: function(e) {
-		this.model.set("selection", $(e.target).clone()[0]);
-	},
-
-	handleMouseDown: function(e) {
-		if (
-			e.which == 1 && $(e.target).attr("id") == "viewport" &&
-			!window.drag && this.model.get("layer_view").collection.length
-		) {
+	updateMap: function(e) {
+		if (e.which == 1 && !window.drag && this.model.get("layer_view").collection.length ) {
 			window.mousedown = true;
 
-			var x = this.model.get("cursor")[0];
-			var y = this.model.get("cursor")[1];
+			var cx = this.model.get("cursor")[0];
+			var cy = this.model.get("cursor")[1];
 
-			if (this.model.has("selection")) {
+			if (window.selection) {
+
+				var sx = window.selection[0][0];
+				var sy = window.selection[0][1];
+				var ex = window.selection[1][0];
+				var ey = window.selection[1][1];
 
 				var tileset = this.model.get("tileset_view").getActive();
 				var layer = this.model.get("layer_view").getActive();
 				var map = $.extend({}, layer.get("map"));
-
 				if (!map[tileset.get("name")]) { map[tileset.get("name")] = {}; }
-				var img = $(this.model.get("selection")).clone()[0];
 
-				// TODO save tiles as css class to prevent copying
-				map[tileset.get("name")][x + "_" + y] = img;
+				var base_x = sx/window.tileSize[0];
+				var base_y = sy/window.tileSize[1];
+				
+				for (var y = base_y, ly = ey/window.tileSize[1]; y <= ly; y++) {
+					for (var x = base_x, lx = ex/window.tileSize[0]; x <= lx; x++) {
+
+						var pos_x = cx+(x-base_x);
+						var pos_y = cy+(y-base_y);
+
+						map[tileset.get("name")][pos_x+"_"+pos_y] = [x, y];
+					}
+				}
+
 				layer.set("map", map);
 			}
+
+			this.model.draw();
 		}
 	},
 
-	handleMouseUp: function(e) {
-		if (e.which == 1) {
-			window.mousedown = false;
-		}
-	},
+	mouseup: function(e) { if (e.which == 1) { window.mousedown = false; } },
 
-	handleMovement: function(e) {
+	updateCursor: function(e) {
 
 		if (!this.model.get("tileset_view").collection.length) { return; }
 
-		var x = e.pageX;
-		var y = e.pageY;
+		var x = Math.floor((e.pageX-$("#canvas").offset().left) / window.tileSize[0]);
+		var y = Math.floor((e.pageY-$("#canvas").offset().top) / window.tileSize[1]);
 
-		var tileset = this.model.get("tileset_view").getActive();
+		this.model.set("cursor", [x, y]);
+		$("#canvas_selection").css("left", (x*window.tileSize[0]) + "px");
+		$("#canvas_selection").css("top", (y*window.tileSize[1]) + "px");
 
-		// TODO cache tile width/height
-		var tw = tileset.get("tile_size")[0];
-		var th = tileset.get("tile_size")[1];
-
-		var sx = Math.floor((x-$("#canvas").offset().left) / tw);
-		var sy = Math.floor((y-$("#canvas").offset().top) / th);
-
-		this.model.set("cursor", [sx, sy]);
-
-		if (window.mousedown) { this.handleMouseDown(e); }
-
-		this.model.draw();
+		if (window.mousedown) { this.updateMap(e); }
 	},
 
-	handleKeyDown: function(e) {
+	keydown: function(e) {
 		if (e.keyCode == 32 && !e.ctrlKey) {
 			e.preventDefault();
 			$("#container").css("cursor", "move");
@@ -464,12 +521,14 @@ var CanvasView = Backbone.View.extend({
 		}
 	},
 
-	handleKeyUp: function(e) {
+	keyup: function(e) {
 		if (e.keyCode == 32) {
 			window.drag = false;
 			$("#container").css("cursor", "default");
 			$("#container").draggable("option", "disabled", true);
 			$("#viewport").draggable("option", "disabled", true);
 		}
-	}
+	},
+
+	updateGrid: function() { this.model.update_grid(); }
 });

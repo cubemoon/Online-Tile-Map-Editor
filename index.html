@@ -37,7 +37,10 @@
 		<a href="https://github.com/elias94xx/Online-Tile-Map-Editor"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 
 		<div id="container">
-			<div id="canvas"></div>
+			<div id="canvas">
+				<div id="canvas_selection"></div>
+				<div id="canvas_tiles"></div>
+			</div>
 			<div id="grid"></div>
 			<div id="viewport"></div>
 		</div>
@@ -49,7 +52,7 @@
 				<div>
 					<div id="loading"><img src="img/icons/loading.gif" alt="loading"></div>
 					<div id="custom_select"><select name="tileset_select"><select></div>
-					<div id="tiles"><div id="tiles_container"></div></div>
+					<div id="tileset"><div id="tileset_container"></div></div>
 
 					<div class="dialog" id="dialog_tileset" title="Add Tileset">
 						<table>

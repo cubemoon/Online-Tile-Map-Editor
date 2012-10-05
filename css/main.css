@@ -226,6 +226,16 @@ a:hover {
 /* === TILESETS ======== */
 /* ===================== */
 
+#selector {
+	position: absolute;
+	pointer-events: none;
+	top: 0px;
+	left: 0px;
+	width: 32px;
+	height: 32px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
 #custom_select {
 	width: 100%;
 	height: 30px;
@@ -257,17 +267,7 @@ a:hover {
 
 #tilesets select[name=tileset_select] option { color: #333; }
 
-#tilesets #tiles { height: 200px; }
-
-#tiles_container img {
-	position: relative;
-	display: inline;
-	border: 1px solid #333;
-	cursor: pointer;
-}
-
-#tiles { line-height: 0px; }
-#tiles_container img:hover { border: 1px solid #FFF; }
+#tilesets #tileset { height: 200px; }
 
 #loading {
 	position: absolute;
@@ -506,3 +506,16 @@ ul#layer_list > li > input[type=text][readonly] {
 	cursor: help;
 	border-bottom: 1px dotted #000;
 }
+
+#canvas_tiles .layer {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#canvas_selection {
+	position: absolute;
+	z-index: 99;
+}
+
+#canvas_tiles { position: absolute; }

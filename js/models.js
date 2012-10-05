@@ -109,7 +109,7 @@ var Tileset = Backbone.Model.extend({
 
 		var self = this;
 		img.onload = function() {
-			self.set("src", img);
+			self.set("src", this);
 			if (self.get("alpha") != null) { self.setAlpha(); }
 			else { self.ready(); }
 		};
@@ -213,13 +213,6 @@ var Tileset = Backbone.Model.extend({
 
 var Canvas = Backbone.Model.extend({
 	initialize: function() {
-		$("#canvas").append("<div id='canvas_selection'></div>");
-		$("#canvas").append("<div id='canvas_tiles'></div>");
-
-		$("#canvas_selection").css("position", "absolute");
-		$("#canvas_selection").css("zIndex", "99");
-		$("#canvas_tiles").css("position", "absolute");
-
 		$("#canvas_tiles").css("width", $("#canvas").css("width"));
 		$("#canvas_tiles").css("height", $("#canvas").css("height"));
 
@@ -231,53 +224,54 @@ var Canvas = Backbone.Model.extend({
 	},
 
 	draw: function() {
-		var tileset_active = this.get("tileset_view").getActive();
-
-		var tw = tileset_active.get("tile_size")[0];
-		var th = tileset_active.get("tile_size")[1];
-
-		$("#canvas_selection").css("left", (tw*this.get("cursor")[0]) + "px");
-		$("#canvas_selection").css("top", (th*this.get("cursor")[1]) + "px");
-
 		this.get("layer_view").collection.each(function(layer) {
 			var map = layer.get("map");
 
-			if (!$("#canvas_tiles > #" + layer.get("name")).length) {
-				var div = document.createElement("div");
-				$(div).css("position", "absolute");
-				$(div).css("width", "100%");
-				$(div).css("height", "100%");
-				$(div).attr("id", layer.get("name"));
-				$("#canvas_tiles").append(div);
-			}
-
 			for (var tileset in map) {
+
+				var cx = this.get("cursor")[0];
+				var cy = this.get("cursor")[1];
 				
-				var coords = this.get("cursor")[0] + "_" + this.get("cursor")[1];
-				var x = this.get("cursor")[0] * tw;
-				var y = this.get("cursor")[1] * th;
+				var sx = window.selection[0][0];
+				var sy = window.selection[0][1];
+				var ex = window.selection[1][0];
+				var ey = window.selection[1][1];
 
-				if (!$("#canvas_tiles > #" + layer.get("name") + " ." + coords).length) {
-					var img = map[tileset][coords];
-					$(img).addClass(coords);
-					$(img).css("position", "absolute");
-					$(img).css("left", x + "px");
-					$(img).css("top", y + "px");
+				var base_x = sx/window.tileSize[0];
+				var base_y = sy/window.tileSize[1];
+				
+				for (var y = base_y, ly = ey/window.tileSize[1]; y <= ly; y++) {
+					for (var x = base_x, lx = ex/window.tileSize[0]; x <= lx; x++) {
 
-					$("#canvas_tiles #" + layer.get("name")).append(img);
-				} else {
-					$($("#canvas_tiles > #" + layer.get("name") + " ." + coords)[0]).attr("src", $(map[tileset][coords]).attr("src"));
+						var pos_x = cx+(x-base_x);
+						var pos_y = cy+(y-base_y);
+
+						var coords = pos_x + "_" + pos_y;
+						
+						if (!map[tileset][coords]) { continue; }
+
+						var xy = map[tileset][coords];
+						
+						if (!$("#layer_" + layer.get("name") + " ." + coords).length) {
+							var div = document.createElement("div");
+							$(div).attr("class", coords + " ts_" + $("#tilesets select[name=tileset_select] option:selected").index());
+							$(div).css("position", "absolute");
+							$(div).css("left", (pos_x * window.tileSize[0]) + "px");
+							$(div).css("top", (pos_y * window.tileSize[1]) + "px");
+							$(div).css("width", window.tileSize[0] + "px");
+							$(div).css("height", window.tileSize[1] + "px");
+							$(div).css("backgroundPosition", (-(xy[0]*window.tileSize[0])) + "px" + " " + (-(xy[1]*window.tileSize[1])) + "px");
+							$("#layer_" + layer.get("name")).append(div);
+						} else {
+							var old_class = $("#layer_" + layer.get("name") + " ." + coords).attr("class").match(/^ts_[0-9]+$/);
+							$("#layer_" + layer.get("name") + " ." + coords).removeClass(old_class)
+							$("#layer_" + layer.get("name") + " ." + coords).addClass("ts_" + $("#tilesets select[name=tileset_select] option:selected").index());
+							$("#layer_" + layer.get("name") + " ." + coords).css("backgroundPosition", (-(xy[0]*window.tileSize[0])) + "px" + " " + (-(xy[1]*window.tileSize[1])) + "px");
+						}
+					}
 				}
 			}
 		}, this);
-
-		if (this.has("selection")) {
-			$("#canvas_selection").css("backgroundColor", "transparent");
-			$("#canvas_selection").html(this.get("selection"));
-		} else {
-			$("#canvas_selection").html("");
-			$("#canvas_selection").css("backgroundColor", "rgba(255, 255, 255, 0.2)");
-		}
 	},
 
 	update_grid: function() {
