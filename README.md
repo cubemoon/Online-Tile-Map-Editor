@@ -13,17 +13,13 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
   * Tilesets `(add, remove, slice, margin, alpha definition)`
   * Layers `(add, remove, (re)name, sort)`
   * Drawing `(multiple tile selection)`
+  * Fancy Ui
 
 ##### In Progress
 
   * Viewport `(for topdown/sidescrolling games)`
   * Tools `select, fill, flip/rotate`
-  * Fancy Ui
-
-##### Planned
-
   * Save/Load `(JSON, XML, ...)`
-  * Zoom functionality
 
 -----
 
