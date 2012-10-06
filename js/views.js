@@ -231,7 +231,9 @@ var TilesetCollectionView = Backbone.View.extend({
 
 		// Doesn't seem to work inside events: {}
 		$("#dialog_tileset #tileset_add").on("click", { self: this }, this.addTileset);
-		$("#dialog_tileset input[name=tileset_file]").on("change", this.cacheFiles);
+		$("#dialog_tileset input[name=tileset_file]").on("change", this.cacheFile);
+		$("#dialog_tileset input[name=tileset_file]").on("click", this.cacheFile);
+		$("#dialog_tileset input[name=tileset_file_overlay]").on("click", this.cacheFile);
 	},
 
 	events: {
@@ -323,41 +325,59 @@ var TilesetCollectionView = Backbone.View.extend({
 			}
 
 		// RGB
-		} else { tile_alpha = _.map(tile_alpha.split(","), function(num) { return parseInt(num, 10); }); }
+		} else if (tile_alpha.match(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])(, ?|$)){3}$/)) {
+			tile_alpha = _.map(tile_alpha.split(","), function(num) { return parseInt(num, 10); });
 
-		var file = window.cachedFiles[0];
-		var reader = new FileReader();
-
-		reader.onload = function(e) {
-			var imgData = e.target.result;
-			var index = self.collection.models.length;
-			
-			self.collection.add([
-				{ name: file.name, src: imgData, tile_size: [tile_width, tile_height], margin: tile_margin, alpha: tile_alpha }
-			], { at: index });
-
-			// Add to selectbox when the slicing operation is done
-			self.collection.models[index].set("onready", [function() {
-				this.$el.find("select[name=tileset_select]").append("<option>" + file.name + "</option>");
-				this.$el.find("select[name=tileset_select]").val(file.name).change();
-				$("#dialog_tileset").dialog("close");
-				$("#loading").hide();
-			}, self]);
-		};
+		} else { tile_alpha = null; }
 
 		$("#loading").show();
+		
+		var name;
+		var type;
 
-		if (!file.type.match('image.(png|PNG)')) {
-			alert("Wrong file type in \"" + file.name + "\"\nSupported file types: *.png");
+		if (!window.FileReader) {
+			var data = window.cachedFile.match(/.+\/(.+)\.(png|PNG)/);
+			name = data[1];
+			type = data[2].toLowerCase();
+
+		} else {
+			name = window.cachedFile.name;
+			type = window.cachedFile.type.split("/")[1];
+		}
+
+		if (type != "png") {
+			alert("Wrong file type in \"" + name + "\"\nSupported file types: *.png");
 			$("#loading").hide();
 
-		} else if (self.$el.find("select[name=tileset_select] option:contains(" + file.name + ")").length >= 1) {
-			alert("File \"" + file.name + "\" does already exist.");
+		} else if (self.$el.find("select[name=tileset_select] option:contains(" + name + ")").length) {
+			alert("File \"" + name + "\" does already exist.");
 			$("#loading").hide();
-			
-		} else { reader.readAsDataURL(file); }
 
-		$("#dialog_tileset input[name=tileset_file]").val("");
+		} else {
+			function add(e) {
+				var imgData = e ? e.target.result : window.cachedFile;
+				var index = self.collection.models.length;
+				
+				self.collection.add([
+					{ name: name, src: imgData, tile_size: [tile_width, tile_height], margin: tile_margin, alpha: tile_alpha }
+				], { at: index });
+
+				// Add to selectbox when the slicing operation is done
+				self.collection.models[index].set("onready", [function() {
+					this.$el.find("select[name=tileset_select]").append("<option>" + name + "</option>");
+					this.$el.find("select[name=tileset_select]").val(name).change();
+					$("#dialog_tileset").dialog("close");
+					$("#loading").hide();
+				}, self]);
+			}
+
+			if (window.FileReader) {
+				var reader = new FileReader();
+				 reader.readAsDataURL(window.cachedFile);
+				 reader.onload = add;
+
+			} else { add(); }
+		}
 	},
 
 	removeTileset: function() {
@@ -459,10 +479,15 @@ var TilesetCollectionView = Backbone.View.extend({
 
 	dialog_add: function() { $("#dialog_tileset").dialog({ width: "200px" }); },
 
-	cacheFiles: function(e) {
-		$("#dialog_tileset #file_overlay").val(e.target.files[0].name);
-
-		window.cachedFiles = e.target.files;
+	cacheFile: function(e) {
+		if (!window.FileReader) {
+			e.preventDefault();
+			window.cachedFile = prompt("Your browser doesn't support local file upload.\nPlease insert an image URL below:");
+		
+		} else if (e.type == "change") {
+			$("#dialog_tileset #file_overlay").val(e.target.files[0].name);
+			window.cachedFile = e.target.files[0];
+		}
 	}
 });
 

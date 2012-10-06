@@ -1,24 +1,19 @@
-// Position viewport/canvas
 (function() {
 	var left = (window.innerWidth / 2) - 250;
 	var top = (window.innerHeight / 2) - 300;
 
+	// Center canvas before initializing
 	$("<style>#container { top: " + top + "px; left: " + left + "px; }</style>").appendTo("head");
 })();
 
-$(':not(input,select,textarea), #container').disableSelection();
-
-window.onresize = function() {
-	var left = (window.innerWidth / 2) - 250;
-	var top = (window.innerHeight / 2) - 300;
-	$("#container").css("left", left + "px");
-	$("#container").css("top", top + "px");
-};
-
 window.onload = function() {
-	//include(["js/models.js", "js/views.js", "js/collections.js"], init);
 
-	init();
+	window.onresize = function() {
+		var left = (window.innerWidth / 2) - 250;
+		var top = (window.innerHeight / 2) - 300;
+		$("#container").css("left", left + "px");
+		$("#container").css("top", top + "px");
+	};
 
 	$("#toolbar > div > h2").collapsible({
 		// custom scrollbars fail if closed
@@ -39,11 +34,14 @@ window.onload = function() {
 	});
 
 	$("#container *").on("dragstart", function(e) { e.preventDefault(); });
+	$(':not(input,select,textarea), #container').disableSelection();
+
+
+	//include(["js/models.js", "js/views.js", "js/collections.js"], init);
+	init();
 }
 
 function init() {
-	if (!window.FileReader) { alert("Sorry, your browser doesn't support the HTML5 FileReader API.\nPlease use the latest version of Chrome, Firefox or Opera."); }
-
 	$("#grid").css("width", $("#canvas").css("width"));
 	$("#grid").css("height", $("#canvas").css("height"));
 
