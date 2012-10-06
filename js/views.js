@@ -305,9 +305,10 @@ var TilesetCollectionView = Backbone.View.extend({
 		var tile_margin = parseInt($("#dialog_tileset input[name=tile_margin]").val(), 10);
 		var tile_alpha = $("#dialog_tileset input[name=tile_alpha]").val();
 
+		var hex;
+		
 		// HEX
-		if (tile_alpha.match(/^#?(([0-9a-fA-F]{3}){1,2})$/)) {
-			var hex = tile_alpha.match(/^#?(([0-9a-fA-F]{3}){1,2})$/)[1];
+		if (hex = tile_alpha.match(/^#?(([0-9a-fA-F]{3}){1,2})$/)[1]) {
 
 			if (hex.length == 3) {
 				tile_alpha = [
