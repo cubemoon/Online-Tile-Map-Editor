@@ -40,5 +40,4 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
   * Google Chrome
   * Mozilla Firefox
   * Opera (latest)
-
-(IE9 is missing the the FileReader API, upload via URL or Silverlight might be a possible solution)
+  * Internet Explorer 9
