@@ -10,7 +10,7 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
 
 ##### Implemented
   
-  * Tilesets `(add, remove, slice, margin, alpha channel)`
+  * Tilesets `(add, remove, slice, margin, alpha definition)`
   * Layers `(add, remove, (re)name, sort)`
   * Drawing `(multiple tile selection)`
 
@@ -40,4 +40,4 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
   * Google Chrome
   * Mozilla Firefox
   * Opera (latest)
-  * Internet Explorer 9
+  * Internet Explorer 9 (no alpha definition support)
