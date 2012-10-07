@@ -29,7 +29,6 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
   * **[Backbone.js](http://backbonejs.org/), [Underscore.js](http://underscorejs.org/)**
   * **[jQuery](http://jquery.com/), [jQuery Ui](http://jqueryui.com/)**
 
------
 
 ######Browser Support
 
