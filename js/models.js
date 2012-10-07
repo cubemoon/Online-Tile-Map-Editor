@@ -225,6 +225,40 @@ var Canvas = Backbone.Model.extend({
 		cursor: [0, 0]
 	},
 
+	updateMap: function() {
+		var cx = this.get("cursor")[0];
+		var cy = this.get("cursor")[1];
+
+		if (window.selection) {
+			var sx = window.selection[0][0];
+			var sy = window.selection[0][1];
+			var ex = window.selection[1][0];
+			var ey = window.selection[1][1];
+
+			var tileset = this.get("tileset_view").getActive();
+			var layer = this.get("layer_view").getActive();
+			var map = JSON.parse(JSON.stringify(layer.get("map")));
+			if (!map[tileset.get("name")]) { map[tileset.get("name")] = {}; }
+
+			var base_x = sx/window.tileSize[0];
+			var base_y = sy/window.tileSize[1];
+			
+			for (var y = base_y, ly = ey/window.tileSize[1]; y <= ly; y++) {
+				for (var x = base_x, lx = ex/window.tileSize[0]; x <= lx; x++) {
+
+					var pos_x = cx+(x-base_x);
+					var pos_y = cy+(y-base_y);
+
+					map[tileset.get("name")][pos_x+"_"+pos_y] = [x, y];
+				}
+			}
+
+			layer.set("map", map);
+		}
+
+		this.draw();
+	},
+
 	draw: function() {
 		this.get("layer_view").collection.each(function(layer) {
 			var map = layer.get("map");
