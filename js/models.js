@@ -1,5 +1,7 @@
 var Settings = Backbone.Model.extend({
 	initialize: function() {
+
+		// Applies form changes after validation
 		this.on("change", function(e) {
 
 			$("#viewport").css("width", this.tileRelative("viewport_width") + "px");
@@ -22,6 +24,7 @@ var Settings = Backbone.Model.extend({
 		this.trigger("change");
 	},
 
+	// Automaticly called when changing Settings' attributes through "set()"
 	validate: function(attrs) {
 		var errors = {};
 
@@ -67,6 +70,7 @@ var Settings = Backbone.Model.extend({
 		"grid_toggle": true
 	},
 
+	// Calculates values relative to the current tile size
 	tileRelative: function(val) {
 
 		if (this.has("tileset_view")) {
@@ -85,12 +89,6 @@ var Settings = Backbone.Model.extend({
 });
 
 var Layer = Backbone.Model.extend({
-	initialize: function() {
-		this.bind("change", function() {
-			//view update
-		});
-	},
-
 	defaults: {
 		active: false,
 		visible: true,
@@ -100,6 +98,7 @@ var Layer = Backbone.Model.extend({
 
 var Tileset = Backbone.Model.extend({
 
+	// Waits for the source image to be loaded and applies the given settings
 	initialize: function() {
 		var img = new Image();
 		img.src = this.get("src");
@@ -125,6 +124,7 @@ var Tileset = Backbone.Model.extend({
 		ready: false
 	},
 
+	// Filters specified color and makes it transparent
 	setAlpha: function() {
 		var img = this.get("src");
 		var w = parseInt(img.width, 10);
@@ -164,6 +164,7 @@ var Tileset = Backbone.Model.extend({
 		img.onload = function() { self.ready(); }
 	},
 
+	// Slices the tileset according to tile size and margin
 	slice: function() {
 		var img = this.get("src");
 		var w = parseInt(img.width, 10);
@@ -202,29 +203,29 @@ var Tileset = Backbone.Model.extend({
 		this.set("tiles", tiles);
 	},
 
-	ready: function(callback, bind) {
-		//this.slice();
+	ready: function() {
 		this.set("ready", true);
 
-		if (this.has("onready")) {
-			var data = this.get("onready");
-			data[0].call(data[1]);
+		if (this.has("callback")) {
+			var fn = this.get("callback")[0];
+			var self = this.get("callback")[1] || this;
+			fn.call(self);
 		}
 	}
 });
 
 var Canvas = Backbone.Model.extend({
-	initialize: function() {
-		$("#canvas_tiles").css("width", $("#canvas").css("width"));
-		$("#canvas_tiles").css("height", $("#canvas").css("height"));
 
-		this.update_grid();
+	initialize: function() {
+		this.updateGrid();
 	},
 
 	defaults: {
 		cursor: [0, 0]
 	},
 
+	// Updates the tile information of the current layer
+	// based on the selection made in CanvasView
 	updateMap: function() {
 		var cx = this.get("cursor")[0];
 		var cy = this.get("cursor")[1];
@@ -308,11 +309,12 @@ var Canvas = Backbone.Model.extend({
 		}, this);
 	},
 
-	update_grid: function() {
+	updateGrid: function(e) {
+		var self = e && e.data ? e.data.self : this;
 		var buffer = document.createElement("canvas");
 		var bfr = buffer.getContext("2d");
 
-		var tileset = this.get("tileset_view").getActive();
+		var tileset = self.get("tileset_view").getActive();
 
 		var tw = tileset.get("tile_size")[0];
 		var th = tileset.get("tile_size")[1];

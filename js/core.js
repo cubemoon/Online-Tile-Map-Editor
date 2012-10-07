@@ -8,13 +8,7 @@
 
 window.onload = function() {
 
-	window.onresize = function() {
-		var left = (window.innerWidth / 2) - 250;
-		var top = (window.innerHeight / 2) - 300;
-		$("#container").css("left", left + "px");
-		$("#container").css("top", top + "px");
-	};
-
+	$(':not(input,select,textarea,#container)').disableSelection();
 	$("#toolbar > div > h2").collapsible({
 		// custom scrollbars fail if closed
 		defaultOpen: 'section1,section2,section3',
@@ -23,27 +17,18 @@ window.onload = function() {
 		speed: 200
 	});
 
-	$("#container").on("mousewheel", function(e, delta) {
-		var zoom = window.zoom || 1;
-		zoom += delta === 1 ? 0.1 : -0.1;
-		$("#container").css("-moz-transform", "scale(" + zoom + ")");
-		$("#container").css("-webkit-transform", "scale(" + zoom + ")");
-		$("#container").css("-ms-transform", "scale(" + zoom + ")");
-		$("#container").css("-o-transform", "scale(" + zoom + ")");
-		window.zoom = zoom;
+	$(document).on("mousedown", function(e) {
+		if (e.which == 1)
+		{ window.mousedown = true; }
+	}).on("mouseup", function(e) {
+		if (e.which == 1)
+		{ window.mousedown = false; }
 	});
 
-	$("#container *").on("dragstart", function(e) { e.preventDefault(); });
-	$(':not(input,select,textarea,#container)').disableSelection();
-
-
-	//include(["js/models.js", "js/views.js", "js/collections.js"], init);
 	init();
 }
 
 function init() {
-	$("#grid").css("width", $("#canvas").css("width"));
-	$("#grid").css("height", $("#canvas").css("height"));
 
 	var settings = new Settings;
 	var settings_view = new SettingsView({ model: settings });

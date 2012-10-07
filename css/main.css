@@ -79,7 +79,15 @@ a:hover {
 /* === CANVAS ========== */
 /* ===================== */
 
-#container { position: absolute; }
+#container {
+	position: absolute;
+
+	/* Not supported by chrome yet :( */
+	image-rendering:-moz-crisp-edges;
+	image-rendering: -o-crisp-edges;
+	image-rendering:-webkit-optimize-contrast;
+	-ms-interpolation-mode:nearest-neighbor;
+}
 
 #canvas {
 	position: absolute;
@@ -88,6 +96,20 @@ a:hover {
 	display: block;
 	background-color: #666;
 	overflow: hidden;
+}
+
+#canvas_tiles { position: absolute; }
+
+#canvas_tiles .layer {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#canvas_selection {
+	position: absolute;
+	z-index: 99;
+	opacity: 0.5;
 }
 
 #grid {
@@ -493,34 +515,23 @@ ul#layer_list > li > input[type=text][readonly] {
 	padding: 2px 5px;
 }
 
-#dialog_tileset input[type=file] {
+#dialog_tileset #file_container { position: relative; }
+
+#dialog_tileset input[name=tileset_file] {
 	position: relative;
 	height: 20px;
 	opacity: 0;
-	z-index: 2;
+	z-index: 9999;
 }
 
-#dialog_tileset #file_container { position: relative; }
-
-#dialog_tileset #file_overlay {
+#dialog_tileset input[name=tileset_file_overlay] {
 	position: absolute;
 	top: 0px;
+	left: 0px;
+	z-index: 0;
 }
 
 .hint {
 	cursor: help;
 	border-bottom: 1px dotted #000;
 }
-
-#canvas_tiles .layer {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
-
-#canvas_selection {
-	position: absolute;
-	z-index: 99;
-}
-
-#canvas_tiles { position: absolute; }
