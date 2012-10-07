@@ -25,7 +25,7 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
 
 #Dependencies
 
-  * **[HTML5 FileReader API](http://www.w3.org/TR/FileAPI/#dfn-filereader)**
+  * **[HTML5 FileReader API](http://www.w3.org/TR/FileAPI/#dfn-filereader)** [1]
   * **[Backbone.js](http://backbonejs.org/), [Underscore.js](http://underscorejs.org/)**
   * **[jQuery](http://jquery.com/), [jQuery Ui](http://jqueryui.com/)**
 
@@ -35,4 +35,8 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
   * Google Chrome
   * Mozilla Firefox
   * Opera (latest)
-  * Internet Explorer 9 (no alpha definition support)
+  * Internet Explorer 9 [2]
+
+----
+[1] Ajax is used as a fallback solution  
+[2] No alpha definition support (yet)
