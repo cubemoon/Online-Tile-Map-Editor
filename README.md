@@ -2,7 +2,7 @@ Online Tile Map Editor
 ======================
 
 A web based tile map editor for all kinds of 2d games and applications.  
-Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
+**Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/**
 
 -----
 
