@@ -17,7 +17,7 @@ Live Demo: http://elias-schuett.de/git/Online-Tile-Map-Editor/
 
 ###### In Progress
 
-  * Viewport `(for topdown/sidescrolling games)`
+  * Viewport `(for in-game effects e.g. parallax)`
   * Tools `(select, fill, flip/rotate, ...)`
   * Save/Load `(JSON, XML, ...)`
 
