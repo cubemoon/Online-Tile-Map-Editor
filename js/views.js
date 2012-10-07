@@ -87,18 +87,20 @@ var LayerCollectionView = Backbone.View.extend({
 		var input = target.tagName.toLowerCase() == "input" ? target : $(target).children();
 		var name = $(input).val();
 
-		self.collection.each(function(layer) {
-			if (layer.get("name") == name) {
-				self.collection.remove(layer);
-				return false;
-			}
-		}, self);
+		if (confirm("Remove \"" + name + "\" ?")) {
+			self.collection.each(function(layer) {
+				if (layer.get("name") == name) {
+					self.collection.remove(layer);
+					return false;
+				}
+			}, self);
 
-		$(input).parent().remove();
-		$("body #contextmenu").remove();
-		$("#layer_" + name).remove();
+			$(input).parent().remove();
+			$("body #contextmenu").remove();
+			$("#layer_" + name).remove();
 
-		self.sortByIndex();
+			self.sortByIndex();
+		}
 	},
 
 	renameLayer: function(e) {
@@ -106,7 +108,7 @@ var LayerCollectionView = Backbone.View.extend({
 		var target = window.contextTarget;
 		var input = target.tagName.toLowerCase() == "input" ? target : $(target).children();
 		var name = $(input).val();
-		var new_name = prompt("Enter new name (min 3 chars)");
+		var new_name = prompt("Enter new name for \"" + name + "\":");
 
 		if (!new_name || new_name.length < 3) {
 			if (new_name) { alert("Name too short!"); }
@@ -401,6 +403,8 @@ var TilesetCollectionView = Backbone.View.extend({
 		var y = Math.floor((e.pageY - $("#tileset_container").offset().top) / window.tileSize[1]) * window.tileSize[1];
 
 		if (e.type == "mousedown") {
+			window.mousedown = true;
+
 			if (!$("#selector").length)
 			{ $("#tileset_container").append("<div id='selector'></div>"); }
 
@@ -413,7 +417,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 		} else if (e.type == "mousemove") {
 
-			if (window.selection) {
+			if (window.mousedown && window.selection) {
 
 				var sx = window.selection[0][0];
 				var sy = window.selection[0][1];
@@ -478,7 +482,14 @@ var TilesetCollectionView = Backbone.View.extend({
 		return this.collection.models[id];
 	},
 
-	dialog_add: function() { $("#dialog_tileset").dialog({ width: "200px" }); },
+	dialog_add: function() {
+		$("#dialog_tileset").dialog({
+			width: "200px",
+			show: "drop",
+			hide: "drop",
+			modal: true
+		});
+	},
 
 	cacheFile: function(e) {
 		if (!window.FileReader) {
@@ -496,21 +507,19 @@ var CanvasView = Backbone.View.extend({
 	el: "body",
 
 	initialize: function() {
-		$("#container").draggable({ disabled: true });
-		$("#viewport").draggable({ disabled: true });
+		$("#container").draggable({ which: 3 });
+		//$("#viewport").draggable({ disabled: true, which: 3 });
 	},
 
 	events: {
-		"mousedown #viewport": "updateMap",
-		"mouseup": "mouseup",
-		"mousemove #viewport": "updateCursor",
-		"keydown": "keydown",
-		"keyup": "keyup",
-		"change #tilesets select[name=tileset_select]": "updateGrid"
+		"change #tilesets select[name=tileset_select]": "updateGrid",
+		"mousedown #container": "mousedown",
+		"mousemove #container": "mousemove",
+		"mouseup": "mouseup"
 	},
 
-	updateMap: function(e) {
-		if (e.which == 1 && !window.drag && this.model.get("layer_view").collection.length ) {
+	mousedown: function(e) {
+		if (e.which == 1 && this.model.get("layer_view").collection.length) {
 			window.mousedown = true;
 
 			var cx = this.model.get("cursor")[0];
@@ -545,12 +554,23 @@ var CanvasView = Backbone.View.extend({
 			}
 
 			this.model.draw();
+		} else if (e.which == 3) {
+			$("#container").css("cursor", "move");
+			$("#container").css("cursor", "-webkit-grab");
+			$("#container").css("cursor", "-moz-grab");
+			$("#container").css("cursor", "-o-grab");
 		}
 	},
 
-	mouseup: function(e) { if (e.which == 1) { window.mousedown = false; } },
+	mouseup: function(e) {
+		if (e.which == 1) {
+			window.mousedown = false;
+		} else if (e.which == 3) {
+			$("#container").css("cursor", "default");
+		}
+	},
 
-	updateCursor: function(e) {
+	mousemove: function(e) {
 
 		if (!this.model.get("tileset_view").collection.length) { return; }
 
@@ -561,37 +581,7 @@ var CanvasView = Backbone.View.extend({
 		$("#canvas_selection").css("left", (x*window.tileSize[0]) + "px");
 		$("#canvas_selection").css("top", (y*window.tileSize[1]) + "px");
 
-		if (window.mousedown) { this.updateMap(e); }
-	},
-
-	keydown: function(e) {
-		if (e.keyCode == 32 && !e.ctrlKey) {
-			e.preventDefault();
-			$("#container").css("cursor", "move");
-			$("#container").css("cursor", "-webkit-grab");
-			$("#container").css("cursor", "-moz-grab");
-			$("#container").css("cursor", "-o-grab");
-			$("#container").draggable("option", "disabled", false);
-			window.drag = true;
-
-		} else if (e.keyCode == 32 && e.ctrlKey) {
-			e.preventDefault();
-			$("#viewport").css("cursor", "move");
-			$("#viewport").css("cursor", "-webkit-grab");
-			$("#viewport").css("cursor", "-moz-grab");
-			$("#viewport").css("cursor", "-o-grab");
-			$("#viewport").draggable("option", "disabled", false);
-			window.drag = true;
-		}
-	},
-
-	keyup: function(e) {
-		if (e.keyCode == 32) {
-			window.drag = false;
-			$("#container").css("cursor", "default");
-			$("#container").draggable("option", "disabled", true);
-			$("#viewport").draggable("option", "disabled", true);
-		}
+		if (window.mousedown) { this.mousedown(e); }
 	},
 
 	updateGrid: function() { this.model.update_grid(); }

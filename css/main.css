@@ -88,7 +88,6 @@ a:hover {
 	display: block;
 	background-color: #666;
 	overflow: hidden;
-	pointer-events: none;
 }
 
 #grid {
@@ -470,6 +469,12 @@ ul#layer_list > li > input[type=text][readonly] {
 
 .ui-dialog table tr:last-child td { padding-bottom: 0px; }
 
+.ui-widget-overlay {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: rgba(0, 0, 0, 0.5);
+}
 
 /* ===================== */
 /* === MISC ============ */

@@ -23,7 +23,7 @@ window.onload = function() {
 		speed: 200
 	});
 
-	$(document).on("mousewheel", function(e, delta) {
+	$("#container").on("mousewheel", function(e, delta) {
 		var zoom = window.zoom || 1;
 		zoom += delta === 1 ? 0.1 : -0.1;
 		$("#container").css("-moz-transform", "scale(" + zoom + ")");
@@ -34,7 +34,7 @@ window.onload = function() {
 	});
 
 	$("#container *").on("dragstart", function(e) { e.preventDefault(); });
-	$(':not(input,select,textarea), #container').disableSelection();
+	$(':not(input,select,textarea,#container)').disableSelection();
 
 
 	//include(["js/models.js", "js/views.js", "js/collections.js"], init);
