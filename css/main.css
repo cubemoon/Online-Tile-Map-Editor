@@ -317,7 +317,12 @@ ul#layer_list {
 
 ul#layer_list > li {
 	height: 10px;
-	position: relative;
+
+	color: #CCC;
+	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
+	font-size: 12px;
+	line-height: 10px;
+	font-family: Arial;
 
 	padding: 10px;
 	padding-left: 35px;
@@ -335,47 +340,11 @@ ul#layer_list > li {
 
 ul#layer_list > li:last-child { border-bottom: 0px; }
 ul#layer_list > li.hide { background-image: url("../img/icons/eye_closed.png"), url("../img/icons/cog.png"); }
-
-ul#layer_list > li > input[type=text] {
-	color: #CCC;
-	width: 164px;
-
-	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
-	font-size: 12px;
-
-	padding: 2px 5px;
-	position: absolute;
-	top: 4px;
-
-	background-color: #555;
-	box-shadow: none;
-	border: 1px solid #999;
-	border-radius: 0px;
-}
-
 ul#layer_list > li.active { background-color: #564; }
-
-ul#layer_list > li > input[type=text][readonly] {
-	color: #CCC;
-	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
-	font-size: 12px;
-
-	padding: 0px;
-	top: 7px;
-
-	background-color: transparent;
-	box-shadow: none;
-	border: none;
-
-	unselectable: on;
-	user-select: none;
-	selectstart: false;
-	cursor: pointer;
-}
 
 
 /* ===================== */
-/* === LAYERS ========== */
+/* === SHORTCUTS ======= */
 /* ===================== */
 
 #shortcuts table td {

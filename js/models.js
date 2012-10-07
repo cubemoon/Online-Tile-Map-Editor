@@ -261,52 +261,51 @@ var Canvas = Backbone.Model.extend({
 	},
 
 	draw: function() {
-		this.get("layer_view").collection.each(function(layer) {
-			var map = layer.get("map");
+		var layer = this.get("layer_view").getActive();
+		var map = layer.get("map");
 
-			for (var tileset in map) {
+		for (var tileset in map) {
 
-				var cx = this.get("cursor")[0];
-				var cy = this.get("cursor")[1];
-				
-				var sx = window.selection[0][0];
-				var sy = window.selection[0][1];
-				var ex = window.selection[1][0];
-				var ey = window.selection[1][1];
+			var cx = this.get("cursor")[0];
+			var cy = this.get("cursor")[1];
+			
+			var sx = window.selection[0][0];
+			var sy = window.selection[0][1];
+			var ex = window.selection[1][0];
+			var ey = window.selection[1][1];
 
-				var base_x = sx/window.tileSize[0];
-				var base_y = sy/window.tileSize[1];
-				
-				for (var y = base_y, ly = ey/window.tileSize[1]; y <= ly; y++) {
-					for (var x = base_x, lx = ex/window.tileSize[0]; x <= lx; x++) {
+			var base_x = sx/window.tileSize[0];
+			var base_y = sy/window.tileSize[1];
+			
+			for (var y = base_y, ly = ey/window.tileSize[1]; y <= ly; y++) {
+				for (var x = base_x, lx = ex/window.tileSize[0]; x <= lx; x++) {
 
-						var pos_x = cx+(x-base_x);
-						var pos_y = cy+(y-base_y);
+					var pos_x = cx+(x-base_x);
+					var pos_y = cy+(y-base_y);
 
-						var coords = pos_x + "_" + pos_y;
-						
-						if (!map[tileset][coords]) { continue; }
+					var coords = pos_x + "_" + pos_y;
+					
+					if (!map[tileset][coords]) { continue; }
 
-						var xy = map[tileset][coords];
-						
-						if (!$("#layer_" + layer.get("name") + " ." + coords).length) {
-							var div = document.createElement("div");
-							$(div).attr("class", coords + " ts_" + $("#tilesets select[name=tileset_select] option:selected").index());
-							$(div).css("position", "absolute");
-							$(div).css("left", (pos_x * window.tileSize[0]) + "px");
-							$(div).css("top", (pos_y * window.tileSize[1]) + "px");
-							$(div).css("backgroundPosition", (-(xy[0]*window.tileSize[0])) + "px" + " " + (-(xy[1]*window.tileSize[1])) + "px");
-							$("#layer_" + layer.get("name")).append(div);
-						} else {
-							var old_class = $("#layer_" + layer.get("name") + " ." + coords).attr("class").match(/^ts_[0-9]+$/);
-							$("#layer_" + layer.get("name") + " ." + coords).removeClass(old_class)
-							$("#layer_" + layer.get("name") + " ." + coords).addClass("ts_" + $("#tilesets select[name=tileset_select] option:selected").index());
-							$("#layer_" + layer.get("name") + " ." + coords).css("backgroundPosition", (-(xy[0]*window.tileSize[0])) + "px" + " " + (-(xy[1]*window.tileSize[1])) + "px");
-						}
+					var xy = map[tileset][coords];
+					
+					if (!$("#layer_" + layer.get("name") + " ." + coords).length) {
+						var div = document.createElement("div");
+						$(div).attr("class", coords + " ts_" + $("#tilesets select[name=tileset_select] option:selected").index());
+						$(div).css("position", "absolute");
+						$(div).css("left", (pos_x * window.tileSize[0]) + "px");
+						$(div).css("top", (pos_y * window.tileSize[1]) + "px");
+						$(div).css("backgroundPosition", (-(xy[0]*window.tileSize[0])) + "px" + " " + (-(xy[1]*window.tileSize[1])) + "px");
+						$("#layer_" + layer.get("name")).append(div);
+					} else {
+						var old_class = $("#layer_" + layer.get("name") + " ." + coords).attr("class").match(/^ts_[0-9]+$/);
+						$("#layer_" + layer.get("name") + " ." + coords).removeClass(old_class)
+						$("#layer_" + layer.get("name") + " ." + coords).addClass("ts_" + $("#tilesets select[name=tileset_select] option:selected").index());
+						$("#layer_" + layer.get("name") + " ." + coords).css("backgroundPosition", (-(xy[0]*window.tileSize[0])) + "px" + " " + (-(xy[1]*window.tileSize[1])) + "px");
 					}
 				}
 			}
-		}, this);
+		}
 	},
 
 	updateGrid: function(e) {

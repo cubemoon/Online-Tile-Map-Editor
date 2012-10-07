@@ -50,7 +50,7 @@ var LayerCollectionView = Backbone.View.extend({
 	el: "ul#layer_list",
 
 	initialize: function() {
-		this.$el.sortable({ axis: "y", cancel: "input:not([readonly])"});
+		this.$el.sortable({ axis: "y" });
 		this.$el.bind("sortchange", { self: this }, this.sortByIndex);
 
 		$("body").on("mousedown", function(e) {
@@ -65,7 +65,7 @@ var LayerCollectionView = Backbone.View.extend({
 	},
 
 	events: {
-		"click li, li > input": "click"
+		"click li": "click"
 	},
 
 	addLayer: function(e) {
@@ -84,8 +84,7 @@ var LayerCollectionView = Backbone.View.extend({
 	removeLayer: function(e) {
 		var self = e.data.self;
 		var target = window.contextTarget;
-		var input = target.tagName.toLowerCase() == "input" ? target : $(target).children();
-		var name = $(input).val();
+		var name = $(target).html();
 
 		if (confirm("Remove \"" + name + "\" ?")) {
 			self.collection.each(function(layer) {
@@ -95,7 +94,7 @@ var LayerCollectionView = Backbone.View.extend({
 				}
 			}, self);
 
-			$(input).parent().remove();
+			$(target).remove();
 			$("body #contextmenu").remove();
 			$("#layer_" + name).remove();
 
@@ -106,8 +105,7 @@ var LayerCollectionView = Backbone.View.extend({
 	renameLayer: function(e) {
 		var self = e.data.self;
 		var target = window.contextTarget;
-		var input = target.tagName.toLowerCase() == "input" ? target : $(target).children();
-		var name = $(input).val();
+		var name = $(target).html();
 		var new_name = prompt("Enter new name for \"" + name + "\":");
 
 		if (!new_name || new_name.length < 3) {
@@ -122,7 +120,16 @@ var LayerCollectionView = Backbone.View.extend({
 			}
 		}, self);
 
-		$(input).val(new_name);
+
+		$(target).html(new_name);
+
+		var div = document.createElement("div");
+		$(div).attr("class", "layer");
+		$(div).attr("id", "layer_" + new_name);
+		$(div).html($("#layer_" + name).html());
+		$("#canvas_tiles").append(div);
+		
+		$("#layer_" + name).remove();
 		$("body #contextmenu").remove();
 	},
 
@@ -130,7 +137,7 @@ var LayerCollectionView = Backbone.View.extend({
 		this.$el.html("");
 		this.collection.each(function(layer) {
 			var classNames = layer.get("active") ? " class='active'" : "";
-			this.$el.append("<li" + classNames + "><input type='text' value='" + layer.get("name") + "' readonly></li>");
+			this.$el.append("<li" + classNames + ">" + layer.get("name") + "</li>");
 
 			if (!$("#layer_" + layer.get("name")).length) {
 				var div = document.createElement("div");
@@ -143,8 +150,7 @@ var LayerCollectionView = Backbone.View.extend({
 
 	click: function(e) {
 
-		var li = e.target.tagName.toLowerCase() == "li" ? e.target : $(e.target).parent();
-		var name = $(li).find("input").val();
+		var name = $(e.target).html();
 		var layer = null;
 
 		this.collection.each(function(module) {
@@ -152,13 +158,13 @@ var LayerCollectionView = Backbone.View.extend({
 			{ layer = module; }
 		}, this);
 
-		var x = e.pageX - $(li).offset().left;
-		var y = e.pageY - $(li).offset().top;
+		var x = e.pageX - $(e.target).offset().left;
+		var y = e.pageY - $(e.target).offset().top;
 
 		// Toggle visibillity
 		if (x >= 10 && x <= 26 && y >= 10 && y <= 26) {
-			$(li).hasClass("hide") ? $(li).removeClass("hide") : $(li).addClass("hide");
-			layer.set("visible", $(li).hasClass("hide") ? false : true);
+			$(e.target).hasClass("hide") ? $(e.target).removeClass("hide") : $(e.target).addClass("hide");
+			layer.set("visible", $(e.target).hasClass("hide") ? false : true);
 			$("#layer_" + name).toggle();
 
 		// Display layer settings
@@ -180,7 +186,7 @@ var LayerCollectionView = Backbone.View.extend({
 			layer.set("active", true);
 
 			$("#layer_list > li").removeClass("active");
-			$("#layer_list > li > input[value=" + name + "]").parent().addClass("active");
+			$("#layer_list > li:contains(" + name + ")").addClass("active");
 		}
 	},
 
@@ -193,7 +199,7 @@ var LayerCollectionView = Backbone.View.extend({
 		$(list).find(".ui-sortable-helper").remove();
 
 		$(list).find("li").each(function(i) {
-			var name = $(this).children().val();
+			var name = $(this).html();
 			self.collection.each(function(layer) {
 				if (layer.get("name") == drag_name) {
 					layer.set("index", $(list).find(".ui-sortable-placeholder").index());
