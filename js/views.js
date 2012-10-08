@@ -432,7 +432,7 @@ var TilesetCollectionView = Backbone.View.extend({
 
 		} else if (e.type == "mousemove") {
 
-			if (window.mousedown && window.selection) {
+			if (e.which == 1 && window.selection) {
 
 				var sx = window.selection[0][0];
 				var sy = window.selection[0][1];
@@ -569,7 +569,7 @@ var CanvasView = Backbone.View.extend({
 		$("#canvas_selection").css("left", (x*window.tileSize[0]) + "px");
 		$("#canvas_selection").css("top", (y*window.tileSize[1]) + "px");
 
-		if (window.mousedown) { this.model.updateMap(); }
+		if (e.which == 1) { this.model.updateMap(); }
 	},
 
 	toggleSelection: function(e) {

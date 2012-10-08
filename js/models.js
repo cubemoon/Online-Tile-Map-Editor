@@ -270,6 +270,7 @@ var Canvas = Backbone.Model.extend({
 			var cy = this.get("cursor")[1];
 			
 			var sx = window.selection[0][0];
+			var sx = window.selection[0][0];
 			var sy = window.selection[0][1];
 			var ex = window.selection[1][0];
 			var ey = window.selection[1][1];

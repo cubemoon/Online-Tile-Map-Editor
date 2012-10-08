@@ -17,14 +17,6 @@ window.onload = function() {
 		speed: 200
 	});
 
-	$(document).on("mousedown", function(e) {
-		if (e.which == 1)
-		{ window.mousedown = true; }
-	}).on("mouseup", function(e) {
-		if (e.which == 1)
-		{ window.mousedown = false; }
-	});
-
 	init();
 }
 
