@@ -81,12 +81,31 @@ var LayerCollectionView = Backbone.View.extend({
 		self.render();
 	},
 
+	clearLayer: function(e) {
+		var self = e.data.self;
+		var target = window.contextTarget;
+		var name = $(target).html();
+
+		if (confirm("Remove all tiles from \"" + name + "\" ?")) {
+
+			self.collection.models[$(target).index()].set("map", {});
+			$("#layer_" + name).html("");
+			$("body #contextmenu").remove();
+		}
+	},
+
 	removeLayer: function(e) {
 		var self = e.data.self;
 		var target = window.contextTarget;
 		var name = $(target).html();
 
 		if (confirm("Remove \"" + name + "\" ?")) {
+
+			if (self.collection.models.length == 1) {
+				alert("Cannot remove last layer!");
+				return;
+			}
+
 			self.collection.each(function(layer) {
 				if (layer.get("name") == name) {
 					self.collection.remove(layer);
@@ -99,6 +118,8 @@ var LayerCollectionView = Backbone.View.extend({
 			$("#layer_" + name).remove();
 
 			self.sortByIndex();
+			self.collection.models[0].set("active", true);
+			self.$el.children(0).addClass("active");
 		}
 	},
 
@@ -177,8 +198,9 @@ var LayerCollectionView = Backbone.View.extend({
 
 			window.contextTarget = e.target;
 
-			$("#layer-remove").on("click", { self: this }, this.removeLayer);
+			$("#layer-clear").on("click", { self: this }, this.clearLayer);
 			$("#layer-rename").on("click", { self: this }, this.renameLayer);
+			$("#layer-remove").on("click", { self: this }, this.removeLayer);
 
 		// Set active
 		} else {
@@ -569,7 +591,7 @@ var CanvasView = Backbone.View.extend({
 		$("#canvas_selection").css("left", (x*window.tileSize[0]) + "px");
 		$("#canvas_selection").css("top", (y*window.tileSize[1]) + "px");
 
-		if (e.which == 1) { this.model.updateMap(); }
+		if (window.mousedown) { this.model.updateMap(); }
 	},
 
 	toggleSelection: function(e) {

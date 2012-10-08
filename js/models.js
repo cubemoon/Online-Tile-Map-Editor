@@ -243,14 +243,18 @@ var Canvas = Backbone.Model.extend({
 
 			var base_x = sx/window.tileSize[0];
 			var base_y = sy/window.tileSize[1];
-			
+
+			var base_width = $("input[name=measurement]").checked ? parseInt($("#canvas").css("width"), 10) : parseInt($("#canvas").css("width"), 10) / window.tileSize[0];
+			var base_height = $("input[name=measurement]").checked ? parseInt($("#canvas").css("height"), 10) : parseInt($("#canvas").css("height"), 10) / window.tileSize[1];
+
 			for (var y = base_y, ly = ey/window.tileSize[1]; y <= ly; y++) {
 				for (var x = base_x, lx = ex/window.tileSize[0]; x <= lx; x++) {
 
 					var pos_x = cx+(x-base_x);
 					var pos_y = cy+(y-base_y);
 
-					map[tileset.get("name")][pos_x+"_"+pos_y] = [x, y];
+					if (pos_x < base_width && pos_y < base_height)
+					{ map[tileset.get("name")][pos_x+"_"+pos_y] = [x, y]; }
 				}
 			}
 
