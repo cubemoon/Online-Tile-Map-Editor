@@ -17,6 +17,7 @@ A web based tile map editor for all kinds of 2d games and applications.
 
 ###### In Progress
 
+  * Animated tiles `(for a more alive environment)`
   * Viewport `(for in-game effects e.g. parallax)`
   * Tools `(select, fill, flip/rotate, ...)`
   * Save/Load `(JSON, XML, ...)`
