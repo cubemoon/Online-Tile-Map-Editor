@@ -558,6 +558,7 @@ var CanvasView = Backbone.View.extend({
 				$("#container").css("cursor", "default");
 			}
 		});
+		
 		//$("#viewport").draggable({ disabled: true, which: 3 });
 
 		// Recenters the canvas when resizing the browser window

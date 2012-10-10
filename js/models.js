@@ -114,10 +114,6 @@ var Tileset = Backbone.Model.extend({
 		};
 	},
 
-	validate: function() {
-
-	},
-
 	defaults: {
 		margin: 0,
 		alpha: null,
@@ -225,7 +221,7 @@ var Canvas = Backbone.Model.extend({
 	},
 
 	// Updates the tile information of the current layer
-	// based on the selection made in CanvasView
+	// based on the selection made in LayerCollectionView
 	updateMap: function() {
 		var cx = this.get("cursor")[0];
 		var cy = this.get("cursor")[1];
