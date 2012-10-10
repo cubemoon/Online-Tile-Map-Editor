@@ -318,7 +318,7 @@ var TilesetCollectionView = Backbone.View.extend({
 		var hex;
 		
 		// HEX
-		if (hex = tile_alpha.match(/^#?(([0-9a-fA-F]{3}){1,2})$/)) {
+		if (hex == tile_alpha.match(/^#?(([0-9a-fA-F]{3}){1,2})$/)) {
 
 			hex = hex[1];
 
@@ -591,7 +591,9 @@ var CanvasView = Backbone.View.extend({
 		$("#canvas_selection").css("left", (x*window.tileSize[0]) + "px");
 		$("#canvas_selection").css("top", (y*window.tileSize[1]) + "px");
 
-		if (window.mousedown) { this.model.updateMap(); }
+		if ((e.type == "mousedown" && e.which == 1) || window.mousedown) {
+			this.model.updateMap();
+		}
 	},
 
 	toggleSelection: function(e) {
