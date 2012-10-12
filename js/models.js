@@ -51,7 +51,7 @@ var SettingsModel = Backbone.Model.extend({
 		// Applies form changes after validation
 		this.on("change:viewport_width", function(model, value) { $("#viewport").css("width", this.tileRelative(value) + "px"); });
 		this.on("change:viewport_height", function(model, value) { $("#viewport").css("height", this.tileRelative(value) + "px"); });
-		this.on("change:viewport_toggle", function(model, value) { $("#viewport").css("width", value ? "block" : "none"); });
+		this.on("change:viewport_toggle", function(model, value) { $("#viewport").css("display", value ? "block" : "none"); });
 
 		this.on("change:canvas_width", function(model, value) {
 			$("#canvas").css("width", this.tileRelative(value) + "px");
@@ -64,7 +64,7 @@ var SettingsModel = Backbone.Model.extend({
 		});
 
 		this.on("change:canvas_bgcolor", function(model, value) { $("#canvas").css("backgroundColor", value); });
-		this.on("change:grid_toggle", function(model, value) { $("#grid").css("height", value ? "block" : "none"); });
+		this.on("change:grid_toggle", function(model, value) { $("#grid").css("display", value ? "block" : "none"); });
 
 		this.change("*");
 	},
