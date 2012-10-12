@@ -190,7 +190,6 @@ var LayerCollectionView = Backbone.View.extend({
 	},
 
 	click: function(e) {
-
 		var name = $(e.target).html();
 		var layer = null;
 
@@ -210,6 +209,8 @@ var LayerCollectionView = Backbone.View.extend({
 
 		// Display layer settings
 		} else if (x >= 195 && x <= 204 && y >= 7 && y <= 26 && !$("#contextmenu").length) {
+			var self = this;
+
 			$.get("templates/cm_layer.tpl", function(data) {
 
 				$("body").append(data);
@@ -218,9 +219,9 @@ var LayerCollectionView = Backbone.View.extend({
 
 				window.contextTarget = e.target;
 
-				$("#layer-clear").on("click", { self: this }, this.clearLayer);
-				$("#layer-rename").on("click", { self: this }, this.renameLayer);
-				$("#layer-remove").on("click", { self: this }, this.removeLayer);
+				$("#layer-clear").on("click", { self: self }, self.clearLayer);
+				$("#layer-rename").on("click", { self: self }, self.renameLayer);
+				$("#layer-remove").on("click", { self: self }, self.removeLayer);
 			});
 
 		// Set active
