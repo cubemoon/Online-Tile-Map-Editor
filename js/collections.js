@@ -1,7 +1,7 @@
 var LayerCollection = Backbone.Collection.extend({
-	model: Layer
+	model: LayerModel
 });
 
 var TilesetCollection = Backbone.Collection.extend({
-	model: Tileset
+	model: TilesetModel
 });

@@ -1,4 +1,4 @@
-var Settings = Backbone.Model.extend({
+var SettingsModel = Backbone.Model.extend({
 	initialize: function() {
 
 		// Applies form changes after validation
@@ -88,7 +88,7 @@ var Settings = Backbone.Model.extend({
 	}
 });
 
-var Layer = Backbone.Model.extend({
+var LayerModel = Backbone.Model.extend({
 	defaults: {
 		active: false,
 		visible: true,
@@ -96,7 +96,7 @@ var Layer = Backbone.Model.extend({
 	}
 });
 
-var Tileset = Backbone.Model.extend({
+var TilesetModel = Backbone.Model.extend({
 
 	// Waits for the source image to be loaded and applies the given settings
 	initialize: function() {
@@ -210,7 +210,7 @@ var Tileset = Backbone.Model.extend({
 	}
 });
 
-var Canvas = Backbone.Model.extend({
+var CanvasModel = Backbone.Model.extend({
 
 	initialize: function() {
 		this.updateGrid();

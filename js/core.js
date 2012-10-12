@@ -35,7 +35,7 @@ window.onload = function() {
 
 function init() {
 
-	var settings = new Settings;
+	var settings = new SettingsModel;
 	var settings_view = new SettingsView({ model: settings });
 	//settings.on("error", function(model, error) { console.log(error); });
 
@@ -71,7 +71,7 @@ function init() {
 			// Needed to update tile relative
 			settings.set("tileset_view", tileset_view);
 
-			canvas = new Canvas({ tileset_view: tileset_view, layer_view: layer_view });
+			canvas = new CanvasModel({ tileset_view: tileset_view, layer_view: layer_view });
 			canvas_view = new CanvasView({ model: canvas });
 
 			window.clearInterval(preload);
