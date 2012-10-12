@@ -32,25 +32,41 @@ var MenuBarModel = Backbone.Model.extend({
 var SettingsModel = Backbone.Model.extend({
 	initialize: function() {
 
+		$("#viewport").css("width", this.tileRelative(this.get("viewport_width")) + "px");
+		$("#viewport").css("height", this.tileRelative(this.get("viewport_height")) + "px");
+		$("#viewport").css("display", this.get("viewport_toggle") ? "block" : "none");
+
+		$("#canvas").css("width", this.tileRelative(this.get("canvas_width")) + "px");
+		$("#canvas").css("height", this.tileRelative(this.get("canvas_height")) + "px");
+
+		$("#grid").css("width", $("#canvas").css("width"));
+		$("#grid").css("height", $("#canvas").css("height"));
+
+		$("#canvas_tiles").css("width", $("#canvas").css("width"));
+		$("#canvas_tiles").css("height", $("#canvas").css("height"));
+
+		$("#canvas").css("backgroundColor", this.get("canvas_bgcolor"));
+		$("#grid").css("display", this.get("grid_toggle") ? "block" : "none");
+
 		// Applies form changes after validation
-		this.on("change", function(e) {
+		this.on("change:viewport_width", function(model, value) { $("#viewport").css("width", this.tileRelative(value) + "px"); });
+		this.on("change:viewport_height", function(model, value) { $("#viewport").css("height", this.tileRelative(value) + "px"); });
+		this.on("change:viewport_toggle", function(model, value) { $("#viewport").css("width", value ? "block" : "none"); });
 
-			$("#viewport").css("width", this.tileRelative("viewport_width") + "px");
-			$("#viewport").css("height", this.tileRelative("viewport_height") + "px");
-			$("#viewport").css("display", this.get("viewport_toggle") ? "block" : "none");
-
-			$("#canvas").css("width", this.tileRelative("canvas_width"), "px");
-			$("#canvas").css("height", this.tileRelative("canvas_height"), "px");
-
+		this.on("change:canvas_width", function(model, value) {
+			$("#canvas").css("width", this.tileRelative(value) + "px");
 			$("#grid").css("width", $("#canvas").css("width"));
-			$("#grid").css("height", $("#canvas").css("height"));
-
-			$("#canvas_tiles").css("width", $("#canvas").css("width"));
-			$("#canvas_tiles").css("height", $("#canvas").css("height"));
-
-			$("#canvas").css("backgroundColor", this.get("canvas_bgcolor"));
-			$("#grid").css("display", this.get("grid_toggle") ? "block" : "none");
 		});
+
+		this.on("change:canvas_height", function(model, value) {
+			$("#canvas").css("height", this.tileRelative(value) + "px");
+			$("#grid").css("height", $("#canvas").css("height"));
+		});
+
+		this.on("change:canvas_bgcolor", function(model, value) { $("#canvas").css("backgroundColor", value); });
+		this.on("change:grid_toggle", function(model, value) { $("#grid").css("height", value ? "block" : "none"); });
+
+		this.change("*");
 	},
 
 	// Automaticly called when changing Settings' attributes through "set()"
@@ -110,9 +126,9 @@ var SettingsModel = Backbone.Model.extend({
 			var th = tileset_active.get("tile_size")[1];
 			
 			var mod = val.indexOf("width") != -1 ? tw : th;
-			return tile_relative ? parseInt(this.get(val), 10) * mod : this.get(val);
+			return tile_relative ? parseInt(val, 10) * mod : val;
 		} else {
-			return this.get(val);
+			return val;
 		}
 	}
 });
