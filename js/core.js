@@ -9,13 +9,18 @@
 window.onload = function() {
 
 	$(':not(input,select,textarea,#container)').disableSelection();
-	$("#toolbar > div > h2").collapsible({
+	$("#toolbar section > h2").collapsible({
 		// custom scrollbars fail if closed
 		defaultOpen: 'section1,section2,section3',
 		cssClose: 'collapsed',
 		cssOpen: '',
-		speed: 200
+		speed: 200,
+		animateOpen: function(elem, opts) { elem.next().slideUp(opts.speed, function() { $("#toolbar").jScrollPane(); }); },
+		animateClose: function(elem, opts) { elem.next().slideDown(opts.speed, function() { $("#toolbar").jScrollPane(); }); }
 	});
+
+	$(window).on("resize", function() { $("#toolbar").jScrollPane(); });
+	$("#toolbar").jScrollPane();
 
 	$(document).on("mousedown", function(e) {
 		if (e.which == 1)

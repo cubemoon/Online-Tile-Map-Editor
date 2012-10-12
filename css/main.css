@@ -144,24 +144,8 @@ a:hover {
 /* === TOOLBAR ========= */
 /* ===================== */
 
-#scrollbar {
-	width: 5px;
-	height: 200px;
-
-	margin-top: 10px;
-
-	background-color: #333;
-	box-shadow: inset -1px -1px 1px #000;
-	border: 1px solid #666;
-
-	border-radius: 5px;
-	position: absolute;
-	top: 0px;
-	left: 267px;
-	z-index: 98;
-
-	cursor: pointer;
-}
+#toolbar .jspDrag, #toolbar .jspTrack{ display: none; }
+#tilesets .jspDrag, #tilesets .jspTrack{ display: block; }
 
 #toolbar {
 	color: #CCC;
@@ -184,7 +168,7 @@ a:hover {
 	z-index: 99;
 }
 
-#toolbar > div {
+#toolbar section {
 	background-color: #333;
 	border-radius: 5px;
 
@@ -192,9 +176,9 @@ a:hover {
 	padding: 5px;
 }
 
-#toolbar > div:last-child { margin-bottom: 20px; }
+#toolbar section:last-child { margin-bottom: 20px; }
 
-#toolbar > div > h2 {
+#toolbar section > h2 {
 	color: #FFF;
 	text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
 	font-size: 20px;
@@ -216,7 +200,7 @@ a:hover {
 	cursor: pointer;
 }
 
-#toolbar > div > h2.collapsed {
+#toolbar section > h2.collapsed {
 	background-image: url("../img/icons/expand.png"), url("../img/gradient.svg");
 	border-radius: 3px;
 }
@@ -229,7 +213,7 @@ a:hover {
 	border-radius: 3px !important;
 }
 
-#toolbar > div > div {
+#toolbar section > div {
 	position: relative;
 	background-color: #333;
 	border: 1px solid #222;
