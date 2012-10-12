@@ -56,7 +56,7 @@ var MenuBarView = Backbone.View.extend({
 
 				$("#dialog").dialog({
 					modal: true,
-					width: $("#dialog").width() + 10,
+					width: 220,
 					show: "drop",
 					hide: "drop"
 				});
