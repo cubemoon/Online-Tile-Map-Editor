@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>2d_ssg Editor</title>
 
-		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Nunito:400">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:600">
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="stylesheet" type="text/css" href="css/jquery.jscrollpane.css">
 
@@ -23,28 +23,12 @@
 		<script type="text/javascript" src="js/views.js"></script>
 		<script type="text/javascript" src="js/collections.js"></script>
 		<script type="text/javascript" src="js/core.js"></script>
-
-		<script type="text/template" id="cm_layer">
-			<ul id="contextmenu">
-				<li id="layer-clear">Clear</li>
-				<li id="layer-rename">Rename</li>
-				<li id="layer-remove" class="remove">Remove</li>
-			</ul>
-		</script>
 	</head>
 
 	<body>
+		<a href="https://github.com/elias94xx/Online-Tile-Map-Editor"><img style="position: absolute; top: 26px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 
-		<a href="https://github.com/elias94xx/Online-Tile-Map-Editor"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
-
-		<div id="container" oncontextmenu="return false;">
-			<div id="canvas">
-				<div id="canvas_selection"></div>
-				<div id="canvas_tiles"></div>
-			</div>
-			<div id="grid"></div>
-			<div id="viewport"></div>
-		</div>
+		<div id="dialog" class="dialog"></div>
 		
 		<div id="toolbar">
 			<section id="tilesets">
@@ -103,82 +87,15 @@
 					<a href="#" id="layer-add">Add layer</a>
 				</div>
 			</section>
+		</div>
 
-			<section id="shortcuts">
-				<h2 id="section3">Shortcuts</h2>
-				<div>
-					<table>
-						<tr>
-							<td>[rightclick]</td>
-							<td>move canvas</td>
-						</tr>
-						<tr>
-							<td>[mousewheel]</td>
-							<td>zoom</td>
-						</tr>
-					</table>
-				</div>	
-			</section>
-
-			<section id="settings">
-				<h2 id="section4">Settings</h2>
-
-				<div>
-					Measurement: <input type="radio" name="measurement" value="pixels"> Pixels <input type="radio" name="measurement" value="tiles"> Tiles<br><br>
-
-					<fieldset>
-						<legend>Viewport</legend>
-						<table>
-							<tr>
-								<td style="width: 50px;">Size</td>
-								<td><input type="text" name="viewport_width"></td>
-								<td style="padding: 0px 10px; text-align: center;">x</td>
-								<td><input type="text" name="viewport_height"></td>
-							</tr>
-							<tr>
-								<td>Offset</td>
-								<td><input type="text" name="viewport_top" ></td>
-								<td style="padding: 0px 10px; text-align: center;">x</td>
-								<td><input type="text" name="viewport_left"></td>
-							</tr>
-						</table>
-					</fieldset><br>
-
-					<fieldset>
-						<legend>Canvas</legend>
-						<table>
-							<tr>
-								<td style="width: 50px;">Size</td>
-								<td><input type="text" name="canvas_width"></td>
-								<td style="padding: 0px 10px; text-align: center;">x</td>
-								<td><input type="text" name="canvas_height"></td>
-							</tr>
-							<tr>
-								<td>BG-Color</td>
-								<td colspan="3"><input type="text" name="canvas_bgcolor"></td>
-							</tr>
-						</table>
-						
-					</fieldset><br>
-
-					<input type="checkbox" name="grid_toggle" id="grid_toggle"> <label for="grid_toggle">Toggle Grid</label><br>
-					<input type="checkbox" name="viewport_toggle" id="viewport_toggle"> <label for="viewport_toggle">Toggle Viewport</label><br>
-				</div>
-			</section>
-
-			<section id="output_dialog" title="Import / Export" class="dialog">
-				Options (do not work yet)<br><br>
-
-				<input type="checkbox" name="output_embed" id="output_embed"> <label for="output_embed">Embed tilesets as Base64 Data-URL</label><br>
-				<input type="checkbox" name="output_viewport" id="output_viewport"> <label for="output_viewport">Include viewport settings</label><br>
-				<input type="checkbox" name="output_canvas" id="output_canvas"> <label for="output_canvas">Include canvas size</label><br>
-				<input type="checkbox" name="output_name" id="output_name"> <label for="output_name">Include layer name</label><br>
-				<input type="checkbox" name="output_index" id="output_index"> <label for="output_index">Include layer index</label><br><br>
-				<input type="button" name="save" value="save" style="width: 100%; padding: 10px;">
-			</section>
-
-			<a href="#" style="display: inline-block; width: 100%; margin-right: 10px; ">Import</a>
-			<a href="#">Export</a>
+		<div id="container" oncontextmenu="return false;">
+			<div id="canvas">
+				<div id="canvas_selection"></div>
+				<div id="canvas_tiles"></div>
+			</div>
+			<div id="grid"></div>
+			<div id="viewport"></div>
 		</div>
 	</body>
 </html>

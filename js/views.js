@@ -1,47 +1,67 @@
-var SettingsView = Backbone.View.extend({
-
-	el: "#settings",
+var MenuBarView = Backbone.View.extend({
 
 	initialize: function() {
 
-		// Sets all input elements with default values
-		for (var i in this.model.defaults) {
-			if ($("input[name=" + i + "]").attr("type") == "checkbox")
-			{ $("input[name=" + i + "]").attr("checked", this.model.defaults[i]); }
-			else if ($("input[name=" + i + "]").attr("type") == "radio")
-			{ $("input[name=" + i + "][value=" + this.model.defaults[i] + "]").attr("checked", true); }
-			else
-			{ $("input[name=" + i + "]").val(this.model.defaults[i]); }
+		// Render the menu bar
+		$.get(this.model.get("template") + "?t=" + new Date().getTime(), function(data) {
+			$("body").prepend(data);
+		});
+
+		// Define event handlers
+		$("body").on("click", "#menubar > li", this.toggleMenu);
+		$("body").on("hover", "#menubar > li", this.toggleMenu);
+		$("body").on("click", "#menubar > li li", { self: this }, this.menuAction);
+		$("body").on("mousedown", function(e) {
+			if (!$("#menubar").find(e.target).length) {
+				$("#menubar > li").removeClass("open");
+			}
+		});
+
+		$("body").on("keyup", "#dialog input", { self: this }, this.model.applyInputs);
+	},
+
+	toggleMenu: function(e) {
+		if (e.type == "click" || $(e.target).siblings().hasClass("open")) {
+
+			$(e.target).siblings().removeClass("open");
+			$(e.target).hasClass("open") ? $(e.target).removeClass("open") : $(e.target).addClass("open");
 		}
 	},
 
-	events: {
-		"keyup input": "handleInput",
-		"keyup textarea": "handleInput",
-		"change input": "handleInput",
-		"change select": "handleInput"
-	},
+	// Opens a dialog or toggles a checkbox value
+	menuAction: function(e) {
+		var self = e.data.self;
 
-	// Sends the input to the models validate function
-	handleInput: function(e) {
-		var elem = e.target;
-		var val = "";
+		if ($(e.target).hasClass("checkbox")) {
+			$(e.target).hasClass("checked") ? $(e.target).removeClass("checked") : $(e.target).addClass("checked");
 
-		switch(elem.type) {
-			case "text": val = elem.value; break;
-			case "textarea": val = elem.innerHTML; break;
-			case "select": val = elem.value; break;
-			case "radio": val = elem.value; break;
-			case "checkbox": val = elem.checked; break;
+			var name = $(e.target).attr("data-setting");
+			var value = $(e.target).hasClass("checked");
+
+			self.model.get("settings").set(name, value);
+
+		} else {
+			var template = $(e.target).attr("data-template");
+			$.get("templates/" + template + ".tpl" + "?t=" + new Date().getTime(), function(data) {
+
+				$("#dialog").attr("title", $(e.target).html());
+				$("#dialog").html(data);
+				
+				$("#dialog input").each(function(index, input) {
+					if (["radio", "checkbox"].indexOf(input.type) != -1)
+					{ $(input).attr("checked", self.model.get("settings").get(input.name) == input.value); }
+					else
+					{ $(input).val(self.model.get("settings").get(input.name)); }
+				});
+
+				$("#dialog").dialog({
+					modal: true,
+					width: $("#dialog").width() + 10,
+					show: "drop",
+					hide: "drop"
+				});
+			});
 		}
-
-		var check = this.model.set(elem.name, val);
-
-		// Sets red border on error
-		if (!check)
-		{ elem.style.borderColor = "#F00"; }
-		else
-		{ elem.style.borderColor = "#555"; }
 	}
 });
 
@@ -190,17 +210,18 @@ var LayerCollectionView = Backbone.View.extend({
 
 		// Display layer settings
 		} else if (x >= 195 && x <= 204 && y >= 7 && y <= 26 && !$("#contextmenu").length) {
-			var template = _.template($("#cm_layer").html());
+			$.get("templates/cm_layer.tpl", function(data) {
 
-			$("body").append(template);
-			$("body #contextmenu").css("left", e.pageX + "px");
-			$("body #contextmenu").css("top", e.pageY + "px");
+				$("body").append(data);
+				$("body #contextmenu").css("left", e.pageX + "px");
+				$("body #contextmenu").css("top", e.pageY + "px");
 
-			window.contextTarget = e.target;
+				window.contextTarget = e.target;
 
-			$("#layer-clear").on("click", { self: this }, this.clearLayer);
-			$("#layer-rename").on("click", { self: this }, this.renameLayer);
-			$("#layer-remove").on("click", { self: this }, this.removeLayer);
+				$("#layer-clear").on("click", { self: this }, this.clearLayer);
+				$("#layer-rename").on("click", { self: this }, this.renameLayer);
+				$("#layer-remove").on("click", { self: this }, this.removeLayer);
+			});
 
 		// Set active
 		} else {
@@ -616,4 +637,8 @@ var CanvasView = Backbone.View.extend({
 	},
 
 	preventDrag: function(e) { e.preventDefault(); }
+});
+
+var ExportView = Backbone.View.extend({
+	el: "#"
 });

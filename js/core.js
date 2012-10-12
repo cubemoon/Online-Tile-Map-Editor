@@ -36,8 +36,9 @@ window.onload = function() {
 function init() {
 
 	var settings = new SettingsModel;
-	var settings_view = new SettingsView({ model: settings });
-	//settings.on("error", function(model, error) { console.log(error); });
+
+	var menubar = new MenuBarModel({ settings: settings });
+	var menubar_view = new MenuBarView({ model: menubar });
 
 	var layer_collection = new LayerCollection([
 		{ name: "background", active: true, index: 0 },

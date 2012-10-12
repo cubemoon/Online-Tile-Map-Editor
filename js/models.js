@@ -1,3 +1,34 @@
+var MenuBarModel = Backbone.Model.extend({
+	defaults: {
+		template: "templates/menubar.tpl"
+	},
+
+	applyInputs: function(e) {
+		var self = e.data.self.model;
+		
+		$("#dialog input").each(function(index, input) {
+			
+			var val = "";
+
+			switch(input.type) {
+				case "text": val = input.value; break;
+				case "textarea": val = input.innerHTML; break;
+				case "select": val = input.value; break;
+				case "radio": val = input.value; break;
+				case "checkbox": val = input.checked; break;
+			}
+
+			var check = self.get("settings").set(input.name, val);
+
+			// Sets red border on error
+			if (!check)
+			{ input.style.borderColor = "#F00"; }
+			else
+			{ input.style.borderColor = "#999"; }
+		});
+	}
+});
+
 var SettingsModel = Backbone.Model.extend({
 	initialize: function() {
 
@@ -20,8 +51,6 @@ var SettingsModel = Backbone.Model.extend({
 			$("#canvas").css("backgroundColor", this.get("canvas_bgcolor"));
 			$("#grid").css("display", this.get("grid_toggle") ? "block" : "none");
 		});
-
-		this.trigger("change");
 	},
 
 	// Automaticly called when changing Settings' attributes through "set()"
@@ -73,8 +102,8 @@ var SettingsModel = Backbone.Model.extend({
 	// Calculates values relative to the current tile size
 	tileRelative: function(val) {
 
-		if (this.has("tileset_view")) {
-			var tile_relative = this.get("measurement") == "tiles" ? true : false;
+		if (this.has("tileset_view") && $("#dialog").find("input[name=measurement][value=tiles]").length) {
+			var tile_relative = $("#dialog").find("input[name=measurement][value=tiles]")[0].checked ? true : false;
 			var tileset_active = this.get("tileset_view").getActive();
 
 			var tw = tileset_active.get("tile_size")[0];
@@ -330,4 +359,8 @@ var CanvasModel = Backbone.Model.extend({
 		$("#canvas_selection").css("width", tw + "px");
 		$("#canvas_selection").css("height", th + "px");
 	}
+});
+
+var ExportModel = Backbone.Model.extend({
+
 });

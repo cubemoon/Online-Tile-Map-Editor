@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-	font-family: Nunito;
+	font-family: Arial;
 	background-color: #333;
 	box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.5);
 	overflow: hidden;
@@ -73,6 +73,76 @@ a:hover {
 #contextmenu li:last-child { border-bottom: 0px; }
 #contextmenu > li > ul > li { display: none; }
 #contextmenu > li:hover ul > li { display: block !important; }
+
+#menubar {
+	color: #999;
+	font-size: 12px;
+	text-shadow: 0px 1px #000;
+
+	width: 100%;
+	height: 25px;
+	padding: 0px 10px;
+
+	list-style: none;
+
+	background-color: #222;
+	border-bottom: 1px solid #333;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 999;	
+}
+
+#menubar > li {
+	height: 15px;
+	padding: 7px 10px 3px 10px;
+	float: left;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-left: 1px solid #111;
+	border-right: 1px solid #333;
+	cursor: pointer;
+}
+
+#menubar > li:hover, #menubar > li.open { color: #CCC; background-color: #333; }
+#menubar > li:first-child { border-left: none; }
+#menubar > li:last-child { border-right: none; }
+#menubar > li.open ul { display: block; }
+
+#menubar li ul {
+	position: absolute;
+	top: 25px;
+	display: none;
+	list-style: none;
+	margin-left: -11px;
+}
+
+#menubar li ul li {
+	color: #999;
+	font-size: 12px;
+	padding: 5px 10px;
+	background-color: #333;
+
+	border: 1px solid #222;
+	border-top: 1px solid #444;
+}
+
+#menubar li ul li:hover { color: #CCC; background-color: #444; }
+#menubar li ul li:first-child { border-top: none; }
+#menubar li ul li:last-child { border-radius: 0px 0px 3px 3px; }
+
+#menubar li ul li.checkbox {
+	background-image: url("../img/icons/unchecked.png");
+	background-repeat: no-repeat;
+	background-position: 5px 50%;
+	padding-left: 26px;
+}
+
+#menubar li ul li.checkbox:hover { background-image: url("../img/icons/unchecked_hover.png"); }
+#menubar li ul li.checked { background-image: url("../img/icons/checked.png"); }
+#menubar li ul li.checked:hover { background-image: url("../img/icons/checked_hover.png"); }
 
 
 /* ===================== */
@@ -159,11 +229,11 @@ a:hover {
 	overflow: hidden;
 
 	background-color: #444;
-	border-right: 1px solid #666;
+	border-right: 1px solid #555;
 	box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.5);
 
 	position: absolute;
-	top: 0px;
+	top: 27px;
 	left: 0px;
 	z-index: 99;
 }
@@ -180,9 +250,10 @@ a:hover {
 
 #toolbar section > h2 {
 	color: #FFF;
+	font-family: "Source Sans Pro";
 	text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
-	font-size: 20px;
-	font-weight: 400;
+	font-size: 18px;
+	font-weight: 600;
 	line-height: 20px;
 	letter-spacing: 0px;
 	background-color: #669900;
@@ -306,7 +377,6 @@ ul#layer_list > li {
 	text-shadow: -1px -1px rgba(0, 0, 0, 0.5);
 	font-size: 12px;
 	line-height: 10px;
-	font-family: Arial;
 
 	padding: 10px;
 	padding-left: 35px;
@@ -325,62 +395,6 @@ ul#layer_list > li {
 ul#layer_list > li:last-child { border-bottom: 0px; }
 ul#layer_list > li.hide { background-image: url("../img/icons/eye_closed.png"), url("../img/icons/cog.png"); }
 ul#layer_list > li.active { background-color: #564; }
-
-
-/* ===================== */
-/* === SHORTCUTS ======= */
-/* ===================== */
-
-#shortcuts table td {
-	padding-right: 10px;
-	padding-bottom: 10px;
-}
-
-
-/* ===================== */
-/* === SETTINGS ======== */
-/* ===================== */
-
-#settings input[type=text] {
-	color: #111;
-	width: 100px;
-	background-color: #666;
-	box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.2);
-
-	border-radius: 3px;
-	border: 1px solid #555;
-
-	padding: 3px;
-}
-
-#settings fieldset {
-	border: 1px solid #555;
-	padding: 10px;
-	border-radius: 5px;
-	background-color: #444;
-
-	box-shadow: 1px 1px 0px #222;
-}
-
-#settings fieldset legend {
-	padding: 0px 5px;
-	color: #FFF;
-}
-
-#settings fieldset table {
-	width: 100%;
-	border-spacing: 0px;
-	border-collapse: collapse;
-}
-
-#settings td {
-	padding-right: 5px;
-	padding-bottom: 5px;
-}
-
-#settings fieldset table tr td { padding: 0px 5px 5px 0px; }
-#settings fieldset table tr:last-child td { padding-bottom: 0px; }
-#settings fieldset table tr td input { width: 100% !important; }
 
 
 /* ===================== */
@@ -416,7 +430,6 @@ ul#layer_list > li.active { background-color: #564; }
 }
 
 .dialog {
-
 	background-color: #EEE;
 	padding: 10px;
 	display: none;
@@ -451,33 +464,48 @@ ul#layer_list > li.active { background-color: #564; }
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
+.ui-dialog-buttonpane { background-color: #EEE; }
+
+.ui-dialog-buttonset {
+	border-top: 1px solid #999;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+	padding: 10px;
+}
+
+.ui-dialog-buttonset button {
+	width: 50% !important;
+	padding: 5px 10px;
+}
+
+
 /* ===================== */
 /* === MISC ============ */
 /* ===================== */
 
-#dialog_tileset input {
+.dialog input[type=text], .dialog input[type=number] {
 	width: 90px !important;
 	height: 20px;
 	padding: 2px 5px;
 	overflow: hidden;
+	border: 1px solid #999;
 }
 
-#dialog_tileset input[type=button] {
+.dialog input[type=button] {
 	width: 100% !important;
 	height: 25px;
 	padding: 2px 5px;
 }
 
-#dialog_tileset #file_container { position: relative; }
+.dialog #file_container { position: relative; }
 
-#dialog_tileset input[name=tileset_file] {
+.dialog input[name=tileset_file] {
 	position: relative;
 	height: 20px;
 	opacity: 0;
 	z-index: 9999;
 }
 
-#dialog_tileset input[name=tileset_file_overlay] {
+.dialog input[name=tileset_file_overlay] {
 	position: absolute;
 	top: 0px;
 	left: 0px;
